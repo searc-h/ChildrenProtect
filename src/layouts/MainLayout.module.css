@@ -1,0 +1,29 @@
+.container {
+    background-color: #f5f5f5;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f9d217;
+}
+
+.body {
+    height: 92vh;
+}
+
+.menu {
+    width: 200px;
+    height: 92vh;
+    float: left;
+    margin-right: 10px;
+    text-align: center;
+    background-color: #fefefe;
+}
+
+.body>section {
+    height: 88vh;
+    margin-left: 220px;
+    background-color: #ffffff;
+}
