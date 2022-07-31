@@ -11,9 +11,10 @@
 }
 .header .left {
   display: flex;
-  width: 30%;
+  width: 400px;
   justify-content: space-between;
   align-items: center;
+  height: 70px;
 }
 .header .left .logo {
   font-size: 3rem;
@@ -21,5 +22,19 @@
 .header .right {
   display: flex;
   justify-content: space-between;
-  width: 10%;
+  align-items: center;
+  width: 240px;
+  height: 70px;
+}
+.header .right .mes {
+  cursor: pointer;
+}
+.header .right .avatar {
+  cursor: pointer;
+}
+.header .right .avatar img {
+  border-radius: 50%;
+}
+.header .right .logout {
+  cursor: pointer;
 }
