@@ -1,18 +1,32 @@
-import React from 'react';
+import React , { lazy,Suspense } from 'react';
+
+import { BrowserRouter, Navigate, Route, Routes  } from "react-router-dom"; 
 import './App.css';
 import 'antd/dist/antd.css';
-import {Home, Login} from "./pages";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+
+import Loading from './components/Loading/Loading';
+import Auth from './components/auth/Auth' //不知道为啥这里 通过./component/index不能引入
+
+const Home = lazy(()=>import('./pages/home/Home'))
+const Login = lazy(()=>import('./pages/login/Login'))
 
 function App() {
-  return (
-      <BrowserRouter>
-          <Routes>
-              <Route path={"/home/*"} element={<Home />} />
-              <Route path={"/login"} element={<Login />} />
-          </Routes>
-      </BrowserRouter>
-  );
+    return (
+        <BrowserRouter>
+            <Suspense fallback={<Loading/>}>
+                <Routes>
+                    {/* 这里的加了鉴权组件，把需要鉴权后才展示的组件放进去 */}
+                    <Route path='/home/*' element={
+                        <Auth>
+                            <Home/>
+                        </Auth>}
+                    />
+                    <Route path={"/login"} element={<Login />} />
+                    <Route path='/' element={<Navigate to={'/home'}/>}/>
+                </Routes>
+            </Suspense>
+        </BrowserRouter>
+    );
 }
 
 export default App;

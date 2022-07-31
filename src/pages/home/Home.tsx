@@ -1,15 +1,32 @@
 import {MainLayout} from "../../layouts/MainLayout";
-import {Route, Routes} from "react-router-dom";
-import {Set} from "../../components";
+import {lazy, Suspense} from 'react'
+import {Route, Routes ,Navigate , Outlet} from "react-router-dom";
+import Loading from "../../components/Loading/Loading";
+const Set = lazy(()=>import('../../views/Set/Set'))
+const Data = lazy(()=>import('../../views/Data/Data'))
+const Director = lazy(()=>import('../../views/Director/Director')) 
+const Event = lazy(()=>import('../../views/Event/Event'))
+const Station = lazy(()=>import('../../views/Station/Station'))
 
-export const Home = () => {
-    return  <MainLayout>
-        <Routes>
-            <Route path={"/data"} element={<h1>数据概览组件</h1>} />
-            <Route path={"/station"} element={<h1>站长管理</h1>} />
-            <Route path={"/director"} element={<h1>儿童主任管理</h1>} />
-            <Route path={"/event"} element={<h1>事件管理</h1>} />
-            <Route path={"/set"} element={<Set />} />
-        </Routes>
-    </MainLayout>
+export default  function Home(){
+    return  (
+        <MainLayout>
+            
+            <Suspense fallback={<Loading/>}>
+                <Routes>
+                    
+                    {/* 由于是/home的子路由，所以不需要写/data... */}
+                    <Route path={"data"} element={<Data/>} />
+                    <Route path="manage" element={<Outlet/>}>
+                        <Route path={"station"} element={<Station/>} />
+                        <Route path={"director"} element={<Director/>} />
+                    </Route>
+                    <Route path={"event"} element={<Event/>} />
+                    <Route path={"set"} element={<Set />} />
+                    <Route path={""} element={<Navigate to='/home/data'/>} />
+                </Routes>
+            </Suspense>
+            
+        </MainLayout>
+    )
 }

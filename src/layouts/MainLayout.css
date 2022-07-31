@@ -1,0 +1,27 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  background-color: #f5f5f5;
+}
+.container .body {
+  display: flex;
+  width: 100%;
+  height: calc(100% - 70px);
+  box-sizing: border-box;
+}
+.container .body .menu {
+  width: 220px;
+  height: 100%;
+  background-color: #fff;
+}
+.container .body .menu .menuList {
+  padding: 10px 40px;
+  font-size: 17px;
+  color: #a2a1a1;
+}
+.container .body .content {
+  width: calc(100% - 220px);
+  height: calc(100% - 30px);
+  background-color: #fff;
+  margin: 15px;
+}

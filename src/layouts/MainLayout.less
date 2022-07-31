@@ -1,0 +1,31 @@
+.container {
+    width: 100vw;
+    height: 100vh;
+    background-color: #f5f5f5;
+
+    .body{
+        display: flex;
+        width: 100%;
+        height: calc(100% - 70px);
+        box-sizing: border-box;
+
+        .menu{
+            width: 220px;
+            height: 100%;
+            background-color: #fff;
+            .menuList{
+                padding: 10px 40px;
+                font-size: 17px;
+                color: #a2a1a1;
+
+            }
+        }
+
+        .content{
+            width: calc(100% - 220px);
+            height: calc(100% - 30px);
+            background-color: #fff;
+            margin: 15px;
+        }
+    }
+}
