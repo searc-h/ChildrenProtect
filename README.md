@@ -13,7 +13,11 @@
   - Auth
   - Header
   - 甚至可以放Menu（这个项目没必要）
+  - （鼓励多抽离服用组建）
 
+## utils自定义的工具包
+  - token相关
+  - （后期可能会增加，鼓励多写工具函数）
 
 
 # Getting Started with Create React App
