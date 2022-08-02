@@ -6,3 +6,4 @@ export {
     Header,
     Loading
 }
+export * from "./Manage/Manage";
