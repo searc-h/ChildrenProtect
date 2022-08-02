@@ -9,7 +9,8 @@ import Auth from './components/auth/Auth' //不知道为啥这里 通过./compon
 
 const Home = lazy(()=>import('./pages/home/Home'))
 const Login = lazy(()=>import('./pages/login/Login'))
-
+const GetBack = lazy(()=>import('./pages/geback/GetBack'))
+const SetPassword = lazy(()=>import('./pages/setpassword/SetPassword'))
 function App() {
     return (
         <BrowserRouter>
@@ -22,7 +23,10 @@ function App() {
                         </Auth>}
                     />
                     <Route path={"/login"} element={<Login />} />
+                    <Route path='/getback' element={<GetBack></GetBack>}></Route>
+                    <Route path='/setpassword' element={<SetPassword></SetPassword>}></Route>
                     <Route path='/' element={<Navigate to={'/home'}/>}/>
+
                 </Routes>
             </Suspense>
         </BrowserRouter>

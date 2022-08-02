@@ -46,5 +46,8 @@
   },
   "main": "index.js",
   "repository": "https://github.com/Ethereal-bang/ChildrenProtect",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@types/bmapgl": "^0.0.5"
+  }
 }

@@ -54,7 +54,7 @@ export default function Login() {
                 : <div></div>
             }
 
-            <div className="right">忘记密码？</div>
+            <div className="right" onClick={()=>{navigate('/getback')}}>忘记密码？</div>
           </div>
         </div>
 
