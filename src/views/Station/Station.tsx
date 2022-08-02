@@ -1,7 +1,6 @@
 import React from 'react'
+import {Manage} from "../../components";
 
 export default function Station() {
-  return (
-    <div>Station</div>
-  )
+    return <Manage role={true}/>
 }

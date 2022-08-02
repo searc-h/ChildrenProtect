@@ -1,7 +1,6 @@
 import React from 'react'
+import {Manage} from "../../components";
 
 export default function Director() {
-  return (
-    <div>Director</div>
-  )
+    return <Manage role={false}/>
 }
