@@ -1,0 +1,11 @@
+.container {
+    width: 800px;
+    padding: 30px;
+}
+
+.bar {
+    margin-bottom: 30px;
+}
+.bar>button {
+    float: right;
+}
