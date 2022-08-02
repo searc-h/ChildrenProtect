@@ -11,7 +11,6 @@ const Station = lazy(()=>import('../../views/Station/Station'))
 export default  function Home(){
     return  (
         <MainLayout>
-            
             <Suspense fallback={<Loading/>}>
                 <Routes>
                     

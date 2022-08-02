@@ -1,0 +1,94 @@
+
+.login-outer{
+    width: 100vw;
+    height: 100vh;
+    background-image:url('../../assets/images/loginC.png');
+    background-color: rgb(250, 188, 19);
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    .loginBox{
+        position:absolute;
+        top: 52.4%;
+        left: 54%;
+        transform: translateY(-50%);
+        width: 580px;
+        height: 470px;
+        background-color: #fff;
+        border-radius: 20px;
+        padding: 10px 60px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .title{
+            line-height: 90px;
+            font-weight: 555;
+            font-size: 2rem;
+            color: rgb(244, 207, 106);
+        }
+        .mid{
+            display: flex;
+            flex-direction: column;
+            
+            height: 60%;
+            width: 100%;
+            .user , .pass{
+                font-size: 1rem;
+                font-weight: 555;
+                padding: 10px 0px;
+            }
+            .input{
+                margin-bottom: 20px;
+            }
+            .input,.password{
+                width: 100%;
+                line-height: 45px;
+                font-size: 1rem;
+                input{
+                    width: 100%;
+                    padding-left: 10px;
+                    color: rgb(31, 31, 29);
+                    font-weight: 500;
+                    border: 2px solid #c2c1c1;
+                    border-radius: 10px;
+                }
+            }
+            
+            .tips{
+                display: flex;
+                justify-content: space-between;
+                line-height: 40px;
+                .left{
+                    color: rgb(216, 26, 26);
+                    padding-left: 10px;
+                    font-weight: 500;
+                }
+                .right{
+                    color: #716c6c;
+                }
+            }
+            
+        }
+
+        .loginBtn{
+            width: 100%;
+            height: 40px;
+            padding: 20px;
+            button{
+                width: 100%;
+                line-height: 45px;
+                border-radius: 5px;
+                background-color: rgb(230, 171, 8);
+                color: #fff;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                &:active{
+                    transform: scale(0.99);
+                }
+            }
+
+        }
+        
+    }
+}
