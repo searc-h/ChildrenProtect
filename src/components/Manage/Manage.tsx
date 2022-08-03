@@ -11,6 +11,7 @@ interface DataType {
   phone: number,
   op?: string, /*操作?*/
 }
+
 interface Props {
     role: boolean,  // true表站长管理, false表儿童主任管理
 }
