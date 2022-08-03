@@ -16,7 +16,7 @@ export default function Login() {
       setToken(username)
 
       setTimeout(() => {
-        navigate('/home')
+        navigate('/home/data')
       }, 0);
     }
   }

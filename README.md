@@ -19,6 +19,32 @@
   - token相关
   - （后期可能会增加，鼓励多写工具函数）
 
+## 使用craco修改antD的默认颜色以及样式的按需引入
+  - [借鉴文章1](https://blog.csdn.net/HL477/article/details/122570061)
+  - [借鉴文章2](https://blog.csdn.net/weixin_45526332/article/details/123722429)
+  - 遇到的问题：配置之后重新运行非常慢
+
+## 解决手动刷新页面，菜单重置到默认选项的bug：
+  ```bash
+      # 修改菜单List中的key对呀pathname
+      const items = [
+        { label: <Link to={"/home/data"} className='item' >数据概览</Link> , key: "/home/data", },
+        { 
+            label: "角色管理",
+            key: "/home/manage",
+            children: [
+                { label: <Link to={"/home/manage/station"} className='item itemc'>站长管理</Link>, key: "/home/manage/station", },
+                { label: <Link to={"/home/manage/director"} className='item itemc'>儿童主任管理</Link>, key: "/home/manage/director", },
+            ]
+        },
+        { label: <Link to={"/home/event"} className='item'>事件管理</Link>, key: "/home/event", },
+        { label: <Link to={"/home/set"} className='item'>设置</Link>, key: "/home/set", },
+      ]
+      # 每次页面刷新都会得到目前页面的的pathname
+      let { pathname } = useLocation()
+
+      # 菜单的默认选项设置为pathname
+  ```
 
 # Getting Started with Create React App
 

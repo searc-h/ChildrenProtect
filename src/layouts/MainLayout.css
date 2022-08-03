@@ -18,7 +18,17 @@
 .container .body .menu .menuList {
   padding: 10px 40px;
   font-size: 17px;
-  color: #a2a1a1;
+}
+.container .body .menu .item {
+  font-size: 1.1rem;
+  letter-spacing: 3px;
+  padding-left: 22px;
+}
+.container .body .menu .itemc {
+  padding-left: 0px;
+}
+.container .body .menu .ant-menu-submenu-title .ant-menu-title-content {
+  padding-left: 22px;
 }
 .container .body .content {
   width: calc(100% - 220px);

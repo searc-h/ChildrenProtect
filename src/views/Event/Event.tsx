@@ -69,7 +69,7 @@ export default function Event() {
     const [data, setData] = useState([
         {key: 1, number: 1, type: "非强制报告事件", phone: 111111111, state: "1"}
     ]);
-    const [modalContent, setModalContent] = useState<ModalContent[]>(new Array(4).fill({visible: false}));
+    const [modalContent, setModalContent] = useState<ModalContent[]>(new Array(4).fill({visible: false,title:<span style={{color:"red"}}>我试试</span>}));
 
     function showModal(order: number) {
         setModalContent(arr => {
@@ -90,15 +90,17 @@ export default function Event() {
     return (
         <>
             <Table columns={columns} dataSource={data}/>
-            {modalContent?.map((item, index) => <Modal
-                visible={item.visible}
-                title={item.title}
-                onOk={handle}
-                onCancel={handle}
-                key={index}
-            >
-                <p>{item.content}</p>
-            </Modal>)}
+            {modalContent?.map((item, index) =>
+                <Modal
+                    visible={item.visible}
+                    title={item.title}
+                    onOk={handle}
+                    onCancel={handle}
+                    key={index}
+                >
+                    <p>{item.content}</p>
+                </Modal>)
+            }
         </>
     )
 }

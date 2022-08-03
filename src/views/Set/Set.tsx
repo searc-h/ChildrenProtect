@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {Button, Input, Modal} from "antd";
-
+import './Set.css'
 interface ModalContent {
     title: string,
     visible: boolean,
@@ -21,19 +21,19 @@ export default function Set (){
     }
 
     return <>
-        <form>
+        <form className="form-outer">
             <label>
-                管理员账户名
-                <input placeholder={"15086861111"}/>    {/*原账户名*/}
+                <div className="title">管理员账户名</div>
+                <input type="text" placeholder={"15086861111"}/>    {/*原账户名*/}
                 <button type={"button"} onClick={() => showModal(0)}>修改账户名</button>
             </label>
             <label>
-                管理员账户密码
+                <div className="title">管理员账户密码</div>
                 <input type={"password"} placeholder={"*******"}/>    {/*原*/}
                 <button type={"button"} onClick={() => showModal(1)}>修改密码</button>
             </label>
         </form>
-        <Modal title={"修改账号"} visible={visible[0]} onOk={handleForm} onCancel={handleForm}>
+        <Modal centered title={"修改账号"} visible={visible[0]} onOk={handleForm} onCancel={handleForm}>
             <label>
                 账号
                 <Input placeholder={"请输入新手机号"} />
@@ -44,7 +44,7 @@ export default function Set (){
                 <Button title={"获取验证码"} />
             </label>
         </Modal>
-        <Modal title={"修改密码"} visible={visible[1]} onOk={handleForm} onCancel={handleForm}>
+        <Modal centered title={"修改密码"} visible={visible[1]} onOk={handleForm} onCancel={handleForm}>
             <label>
                 原密码
                 <Input placeholder={"请输入"} />
