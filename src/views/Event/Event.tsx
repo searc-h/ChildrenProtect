@@ -1,6 +1,8 @@
 import React, {useState} from 'react'
+
 import {Modal, Table} from "antd";
 import {ColumnsType} from "antd/es/table";
+import { useNavigate,Outlet } from 'react-router-dom';
 
 interface DataType {
     key: React.Key,
@@ -26,6 +28,9 @@ const stateMap = {
 }
 
 export default function Event() {
+
+    let navigate = useNavigate()
+
     const columns: ColumnsType<DataType> = [
         {
             title: "序号",
@@ -62,7 +67,7 @@ export default function Event() {
         }, {
             title: "操作",
             key: "op",
-            render: () => <a onClick={() => showModal(3)}>查看详情</a>,
+            render: () => <a onClick={() => {navigate('/home/detail' , {replace:false, state:{id:1001}})}}>查看详情</a>,
         },
     ];
 
@@ -101,6 +106,7 @@ export default function Event() {
                     <p>{item.content}</p>
                 </Modal>)
             }
+
         </>
     )
 }

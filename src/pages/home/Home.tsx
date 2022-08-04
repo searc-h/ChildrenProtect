@@ -7,7 +7,7 @@ const Data = lazy(()=>import('../../views/Data/Data'))
 const Director = lazy(()=>import('../../views/Director/Director')) 
 const Event = lazy(()=>import('../../views/Event/Event'))
 const Station = lazy(()=>import('../../views/Station/Station'))
-
+const Detail = lazy(()=>import('../../views/Detail/Detail'))
 export default  function Home(){
     return  (
         <MainLayout>
@@ -21,11 +21,14 @@ export default  function Home(){
                         <Route path={"director"} element={<Director/>} />
                     </Route>
                     <Route path={"event"} element={<Event/>} />
+                    {/* 这里不能把detail放进event的子路由中 */}
+                    <Route path="detail" element={<Detail/>} />
                     <Route path={"set"} element={<Set />} />
                     <Route path={""} element={<Navigate to='/home/data'/>} />
                 </Routes>
             </Suspense>
             
+            <Outlet></Outlet>
         </MainLayout>
     )
 }
