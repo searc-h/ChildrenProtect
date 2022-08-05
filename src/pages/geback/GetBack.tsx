@@ -50,8 +50,8 @@ export default function GetBack() {
           <div className='password'>
             <input 
               type="password" 
-              style={{ width:'300px', "borderColor": !isRight ? 'rgb(216, 26, 26)' : '',"color":!isRight?"rgb(216, 26, 26)":""}} 
-              placeholder='密码' 
+              style={{ width:'200px', "borderColor": !isRight ? 'rgb(216, 26, 26)' : '',"color":!isRight?"rgb(216, 26, 26)":""}} 
+              placeholder='输入验证码' 
               value={code}
               onChange={(e)=>{setCode(e.target.value)}}
             />

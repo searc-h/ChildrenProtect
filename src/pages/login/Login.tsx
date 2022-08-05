@@ -50,7 +50,7 @@ export default function Login() {
           <div className="tips">
             {
               !isRight ?
-                <div className="left">同户密码错误重新输入</div>
+                <div className="left">用户密码错误重新输入</div>
                 : <div></div>
             }
 
