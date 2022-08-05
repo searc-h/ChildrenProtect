@@ -21,26 +21,31 @@ const columns: ColumnsType<DataType> = [
     title: "序号",
     dataIndex: "number",
     width: 100,
+    align:'center',
     key: "number",
   }, {
     title: "姓名",
     width: 200,
+    align:'center',
     dataIndex: "name",
     key: "name",
   }, {
     title: "手机号",
     width: 300,
+    align:'center',
     dataIndex: "phone",
     key: "phone",
   }, {
     title: "所属组织",
     width: 500,
+    align:'center',
     dataIndex: "organization",
     key: "organization",
   }, {
     title: "操作",
     key: "op",
     width: 200,
+    align:'center',
     render: () => <Space>
       <Button style={{color:'green'}}>编辑</Button>
       <Button style={{color:'red'}}> 删除</Button>

@@ -1,6 +1,9 @@
 .loading {
   width: 100%;
-  font-size: 25px;
-  color: blue;
-  text-align: center;
+  height: 100%;
+  font-size: 35px;
+  color: #eab72d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

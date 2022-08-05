@@ -2,7 +2,8 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { RightOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
 import './Detail.css'
-import { useEffect } from 'react'
+import { useRef, useEffect } from 'react'
+import marker from '../../assets/icons/marker.png'
 
 interface PList {
   name: string,
@@ -33,21 +34,26 @@ interface map {
   status?:string
 }
 interface mapProps {
-  mapList: map[]
+  mapList: map[],
+  mapRef:any
 }
 function MyMap(props: mapProps) {
 
-  let { mapList } = props
+  let { mapList ,mapRef} = props
   useEffect(() => {
-    let map = new BMapGL.Map('mymap');
+    let map = new BMapGL.Map(mapRef.current);
     map.centerAndZoom(new BMapGL.Point(106.5907, 29.7320), 16);
     map.enableScrollWheelZoom();
+
+    let markerIcon = new BMapGL.Icon(marker, new BMapGL.Size(52, 26));
 
     mapList.forEach((marker) => {
       let { longitude, latitude } = marker
       let Pointer: any
       // 创建点标记
-      Pointer = new BMapGL.Marker(new BMapGL.Point(+latitude, +longitude))
+      Pointer = new BMapGL.Marker(new BMapGL.Point(+latitude, +longitude),{
+        icon:markerIcon
+      })
       map.addOverlay(Pointer)
     })
 
@@ -66,6 +72,8 @@ export default function Detail() {
   let id: number | string = state.id
   console.log(id)
 
+  let map1 =  useRef(null)
+  let map2 = useRef(null)
 
   let childList: PList[] = [
     {
@@ -92,10 +100,16 @@ export default function Detail() {
     }
   ]
 
-  let mapList: map[] = [
+  let mapListOld: map[] = [
     {
       longitude: "106.5907",
       latitude: "29.7320"
+    }
+  ]
+  let mapListNew:map[] = [
+    {
+      longitude: "106.5908",
+      latitude: "29.7330"
     }
   ]
 
@@ -136,8 +150,8 @@ export default function Detail() {
                 事件发生位置： <span>渝北区宝圣湖小学校</span>
               </div>
 
-              <div className="mapSite">
-                <MyMap mapList={mapList}/>
+              <div className="mapSite1 mapSite" ref={map1}>
+                <MyMap mapList={mapListOld} mapRef={map1}/>
               </div>
             </div>
           </div>
@@ -158,8 +172,8 @@ export default function Detail() {
               <div className="line">
                 <span className="title">修订后的位置：</span><span>渝北区宝圣湖小学校</span>
               </div>
-              <div className="mapSite">
-                <MyMap mapList={mapList} />
+              <div className="mapSite2 mapSite" ref={map2}>
+                <MyMap mapList={mapListNew} mapRef={map2}/>
               </div>
             </div>
           </div>

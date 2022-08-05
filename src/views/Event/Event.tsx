@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 
 import {Modal, Table} from "antd";
 import {ColumnsType} from "antd/es/table";
-import { useNavigate,Outlet } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 interface DataType {
     key: React.Key,
@@ -36,47 +36,66 @@ export default function Event() {
             title: "序号",
             dataIndex: "number",
             key: "number",
+            align:'center'
         }, {
             title: "事件类型",
             dataIndex: "type",
             key: "type",
+            align:'center'
         }, {
             title: "报告人手机号",
             dataIndex: "phone",
             key: "phone",
+            
+            align:'center'
         }, {
             title: "事件描述",
             dataIndex: "detail",
             key: "detail",
-            render: () => <a onClick={() => showModal(0)}>查看内容</a>,
+            align:'center',
+            render: (text, record, index) => <a onClick={() => showModal({record,text,index ,order:0})}>查看内容</a>,
         }, {
             title: "事件图片",
             dataIndex: "picture",
             key: "picture",
-            render: () => <a onClick={() => showModal(1)}>查看内容</a>,
+            align:'center',
+            render: (text, record, index) => <a onClick={() => showModal({record,text,index ,order:0})}>查看内容</a>,
         }, {
             title: "事件视频",
             dataIndex: "video",
             key: "video",
-            render: () => <a onClick={() => showModal(2)}>查看内容</a>,
+            align:'center',
+            render: (text, record, index) => <a onClick={() => showModal({record,text,index ,order:0})}>查看内容</a>,
         }, {
             title: "处理状态",
             dataIndex: "state",
             key: "state",
-            render: (state: "1" | "2" | "3") => <span>{stateMap[state]}</span>
+            align:'center',
+            render: (state: "1" | "2" | "3") => <span style={state==='1'?{'color':"green"}:state==='2'?{color:"#f9d217"}:{color:"red"}}>{stateMap[state]}</span>
         }, {
             title: "操作",
             key: "op",
+            align:'center',
             render: () => <a onClick={() => {navigate('/home/detail' , {replace:false, state:{id:1001}})}}>查看详情</a>,
         },
     ];
 
-    const [data, setData] = useState([
-        {key: 1, number: 1, type: "非强制报告事件", phone: 111111111, state: "1"}
+    const [data, setData] = useState<DataType[]>([
+        {key: 1, number: 1, type: "非强制报告事件", phone: 111111111, state: "1"},
+        {key: 2, number: 2, type: "非强制报告事件", phone: 111111111, state: "2"},
+        {key: 3, number: 3, type: "非强制报告事件", phone: 111111111, state: "3"}
     ]);
-    const [modalContent, setModalContent] = useState<ModalContent[]>(new Array(4).fill({visible: false,title:<span style={{color:"red"}}>我试试</span>}));
+    const [modalContent, setModalContent] = useState<ModalContent[]>(new Array(3).fill({visible: false,title:<span style={{color:"red"}}>我试试</span>}));
 
-    function showModal(order: number) {
+    interface itemType {
+        order:number,
+        text?:string,
+        record:DataType,
+        index?:number
+    }
+    function showModal(item:itemType) {
+        let {order ,record} = item
+
         setModalContent(arr => {
             const res = [...arr];
             res[order].visible = true;
@@ -97,6 +116,7 @@ export default function Event() {
             <Table columns={columns} dataSource={data}/>
             {modalContent?.map((item, index) =>
                 <Modal
+                    centered
                     visible={item.visible}
                     title={item.title}
                     onOk={handle}

@@ -38,25 +38,6 @@ function MyMap(props: mapProps) {
     let finishedIcon = new BMapGL.Icon(finished, new BMapGL.Size(45, 50));
     let doingIcon = new BMapGL.Icon(doing, new BMapGL.Size(45, 54));
 
-  // 创建点标记
-    // let marker1 = new BMapGL.Marker(new BMapGL.Point(106.5907, 29.7332), {
-    //   icon: finishedIcon
-    // });
-    // let marker2 = new BMapGL.Marker(new BMapGL.Point(106.5930, 29.7302), {
-    //   icon: finishedIcon
-    // });
-    // let marker3 = new BMapGL.Marker(new BMapGL.Point(106.5900, 29.7322), {
-    //   icon: doingIcon
-    // });
-    // let marker4 = new BMapGL.Marker(new BMapGL.Point(106.5947, 29.7304), {
-    //   icon: doingIcon
-    // });
-    // // 在地图上添加点标记
-    // map.addOverlay(marker1);
-    // map.addOverlay(marker2);
-    // map.addOverlay(marker3);
-    // map.addOverlay(marker4);
-
     mapList.forEach((marker)=>{
       let {longitude  , latitude} = marker
       let Pointer :any

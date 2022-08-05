@@ -33,10 +33,11 @@ export default function Set (){
                 <button type={"button"} onClick={() => showModal(1)}>修改密码</button>
             </label>
         </form>
-        <Modal centered title={"修改账号"} visible={visible[0]} onOk={handleForm} onCancel={handleForm}>
+        <Modal centered title={"修改账号"} visible={visible[0]} onOk={handleForm} onCancel={handleForm} okText="确认"
+        cancelText="取消">
             <label>
                 账号
-                <Input placeholder={"请输入新手机号"} />
+                <Input  placeholder={"请输入新手机号"} />
             </label>
             <label>
                 验证码
@@ -44,7 +45,8 @@ export default function Set (){
                 <Button title={"获取验证码"} />
             </label>
         </Modal>
-        <Modal centered title={"修改密码"} visible={visible[1]} onOk={handleForm} onCancel={handleForm}>
+        <Modal centered title={"修改密码"} visible={visible[1]} onOk={handleForm} onCancel={handleForm} okText="确认"
+        cancelText="取消">
             <label>
                 原密码
                 <Input placeholder={"请输入"} />
