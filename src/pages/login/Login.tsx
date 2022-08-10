@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import setToken from '../../utils/setToken'
 import './Login.css'
+import {login as loginApi} from "../../api/loginApi";
+import {message} from "antd";
+
 export default function Login() {
   let [isRight, setIsRight] = useState<boolean>(true)
   let [username, setUsername] = useState<string>('')
@@ -9,16 +12,17 @@ export default function Login() {
   let navigate = useNavigate()
   let Login = () => {
     // 登录逻辑
-    if(password!=='admin'){
-      setIsRight(false)
-    }else{
+    loginApi(username, password).then(res => {
       setIsRight(true)
-      setToken(username)
-
+      setToken(res.data.data.token);
       setTimeout(() => {
         navigate('/home/data')
       }, 0);
-    }
+      return message.success(res.data.message);
+    }).catch(err => {
+      setIsRight(false)
+      return message.error(err.response.data.message);
+    })
   }
 
   return (
@@ -51,7 +55,7 @@ export default function Login() {
             {
               !isRight ?
                 <div className="left">用户密码错误重新输入</div>
-                : <div></div>
+                : <div />
             }
 
             <div className="right" onClick={()=>{navigate('/getback')}}>忘记密码？</div>
