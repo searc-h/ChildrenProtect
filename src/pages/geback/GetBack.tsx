@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './GetBack.css'
+import {getVerificationCode, verifyCode} from "../../api/loginApi";
+import {message} from "antd";
+
 export default function GetBack() {
   let [isRight, setIsRight] = useState<boolean>(true)
   let [phone, setPhone] = useState<string>('')
@@ -13,21 +16,26 @@ export default function GetBack() {
       alert('手机号不能为空')
       return
     }
-
     // 下一步
-    if(code!=='1111'){
-      setIsRight(false)
-    }else{
+    verifyCode(phone, code).then(res => {
       setIsRight(true)
-
       setTimeout(() => {
         navigate('/setpassword', {replace:true})
       }, 0);
-    }
+      return message.success(res.data.message);
+    }, err => {
+      setIsRight(false)
+      return message.error(err.response.data.message);
+    })
   }
 
+  // 发送验证码
   let getCode = ()=>{
-    alert('验证码是1111')
+    getVerificationCode(phone).then(res => {
+      return message.success(res.data.message);
+    }, err => {
+      return message.error(err.response.data.message);
+    })
   }
 
   return (
@@ -61,7 +69,7 @@ export default function GetBack() {
             {
               !isRight ?
                 <div className="left">验证码错误重新输入</div>
-                : <div></div>
+                : <div />
             }
           </div>
         </div>

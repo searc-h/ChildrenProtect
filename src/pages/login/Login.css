@@ -38,7 +38,7 @@
 .login-outer .loginBox .mid .pass {
   font-size: 1rem;
   font-weight: 555;
-  padding: 10px 0px;
+  padding: 10px 0;
 }
 .login-outer .loginBox .mid .input {
   margin-bottom: 20px;
@@ -72,6 +72,7 @@
 }
 .login-outer .loginBox .mid .tips .right {
   color: #716c6c;
+  cursor: pointer;
 }
 .login-outer .loginBox .loginBtn {
   width: 100%;
