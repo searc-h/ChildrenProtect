@@ -64,7 +64,8 @@
 
         # 请求参数:
         {
-            newpassword:string,
+            phone:string,
+            newPassword:string,
         }
 
         # 返回数据:

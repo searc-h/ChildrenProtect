@@ -21,3 +21,11 @@ export const verifyCode = (phone: string, code: string) => {
     data.append("code", code);
     return myAxios.post("/admin/password/sendCode", data);
 }
+
+// 重置密码
+export const setPwd = (pwd: string, phone: string) => {
+    const data = new FormData();
+    data.append("newPassword", pwd);
+    data.append("phone", phone);
+    return myAxios.post("/admin/password/setNewPassword", data);
+}

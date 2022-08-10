@@ -20,7 +20,13 @@ export default function GetBack() {
     verifyCode(phone, code).then(res => {
       setIsRight(true)
       setTimeout(() => {
-        navigate('/setpassword', {replace:true})
+        navigate('/setpassword', {
+          replace:true,
+          state: {  // phone传给重置密码页面
+            phone,
+          }
+        })
+
       }, 0);
       return message.success(res.data.message);
     }, err => {
@@ -57,7 +63,7 @@ export default function GetBack() {
           <div className="pass">验证码</div>
           <div className='password'>
             <input 
-              type="password" 
+              type="text"
               style={{ width:'200px', "borderColor": !isRight ? 'rgb(216, 26, 26)' : '',"color":!isRight?"rgb(216, 26, 26)":""}} 
               placeholder='输入验证码' 
               value={code}

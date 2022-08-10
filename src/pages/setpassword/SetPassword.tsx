@@ -1,24 +1,34 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import setToken from '../../utils/setToken'
+import {useLocation, useNavigate} from 'react-router-dom'
 import './SetPassword.css'
+import {setPwd} from "../../api/loginApi";
+import {message} from "antd";
 export default function SetPassword() {
   let [isRight, setIsRight] = useState<boolean>(true)
   let [passwordOne, setPasswordOne] = useState<string>('')
   let [passwordTwo, setPasswordTwo] = useState<string>('') 
   let navigate = useNavigate()
 
+  // 获取路由参数-phone
+  const {phone} = useLocation().state as {phone: string};
+
+  // 判断两次密码是否一致
   useEffect(()=>{
     if(passwordTwo!==passwordOne)
       setIsRight(false)
     else setIsRight(true)
-  },[passwordTwo])
+  },[passwordOne, passwordTwo])
 
+  // 去重新登录
   let newLogin = ()=>{
-    if(isRight){
-      navigate('/home', {replace:true})
-    }
+    setPwd(passwordTwo, phone).then(res => {
+      navigate('/login', {replace:true})  // 跳转到登录页重新登录以获取token
+      return message.success(res.data.message);
+    }, err => {
+      return message.error(err.response.data.message);
+    })
   }
+
   return (
     <div className='set-outer'>
       <div className="loginBox">
@@ -49,7 +59,7 @@ export default function SetPassword() {
             {
               !isRight ?
                 <div className="left">密码不一致请重新输入</div>
-                : <div></div>
+                : <div />
             }
           </div>
         </div>
