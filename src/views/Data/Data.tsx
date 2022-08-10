@@ -1,14 +1,24 @@
-import React, { useEffect } from 'react'
+import React, {useEffect, useState} from 'react'
 import './Data.css'
 import finished from '../../assets/icons/finished.png'
 import doing from '../../assets/icons/doing.png'
+import {showCardData} from "../../api/dataApi";
+import {message} from "antd";
+
 interface cardProps {
   title: string,
   img: string,
   count: number
 }
+interface CardsData {
+  ChildrenTotal: number,
+  EventTotal: number,
+  PersonTotal: number,
+}
+
 function MyCard(props: cardProps) {
-  let { title, img, count } = props
+  // let { title, img, count } = props
+  let { title, count } = props
   return (
     <div className='card'>
       <div className="title">{title}</div>
@@ -16,7 +26,6 @@ function MyCard(props: cardProps) {
     </div>
   )
 }
-
 
 interface map {
   longitude : string | number   //经度
@@ -66,22 +75,27 @@ function MyMap(props: mapProps) {
 }
 
 export default function Data() {
+  const [data, setData] = useState<CardsData>({
+    ChildrenTotal: 0,
+    EventTotal: 0,
+    PersonTotal: 0,
+  });
 
   // cardList ， mapList 最后通过axios发到
   const cardList:cardProps[] = [
     {
-      title: '强制报告时间总数',
-      count: 2731,
+      title: '强制报告事件总数',
+      count: data.EventTotal,
       img: ''
     },
     {
       title: '工作人员数量',
-      count: 128,
+      count: data.PersonTotal,
       img: ''
     },
     {
       title: '已帮助儿童数量',
-      count: 678,
+      count: data.ChildrenTotal,
       img: ''
     }
   ]
@@ -108,17 +122,27 @@ export default function Data() {
       status: "finished" 
     }
   ]
+
+  // 获取数据概览
+  useEffect(() => {
+    showCardData().then(res => {
+      setData(res.data.data)
+    }, err => {
+      return message.error(err.response.data.message);
+    })
+  }, [])
+
   return (
     <div className='data-outer'>
       <div className="cardBox">
         {
           cardList.map((item) => {
-            return <MyCard {...item} key={item.title}></MyCard>
+            return <MyCard {...item} key={item.title}/>
           })
         }
       </div>
       <div className="mapBox">
-        <MyMap mapList={mapList}></MyMap>
+        <MyMap mapList={mapList} />
       </div>
     </div>
   )
