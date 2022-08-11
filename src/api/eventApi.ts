@@ -14,3 +14,7 @@ export const searchEvent = (keyword: string) => {
     return myAxios.post("/event/search", data);
 }
 
+// 事件详情
+export const getDetail = (eventId: string) => {
+    return myAxios("/event/detail/eventId=" + eventId);
+}
