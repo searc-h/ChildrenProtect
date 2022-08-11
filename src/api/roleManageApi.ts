@@ -17,8 +17,8 @@ export const searchStation = (keyword: string) => {
     return myAxios.post("/station/search", data)
 }
 
-// 添加站长
-export const addStation = (person: Role) => {
+// 添加 站长/儿童主任
+export const add = (person: Role, role: "station" | "director") => {
     const data = new FormData();
     data.append("name", person.name);
     data.append("phone", person.phone);
@@ -26,5 +26,21 @@ export const addStation = (person: Role) => {
     data.append("city", person.city);
     data.append("district", person.district);
     data.append("street", person.street);
-    return myAxios.post("/station/add", data)
+    return myAxios.post('/' + role + "/add", data)
+}
+
+// 显示儿童主任列表
+export const getDirectorList = (page: number = 1) => {
+    const data = new FormData();
+    data.append("current", page + '');
+    return myAxios("/director/list", {
+        data,
+    })
+}
+
+// 检索儿童主任
+export const searchDirector = (keyword: string) => {
+    const data = new FormData();
+    data.append("keyword", keyword);
+    return myAxios.post("/director/search", data)
 }

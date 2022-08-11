@@ -44,5 +44,5 @@ export default function Station() {
         setKeyword(keyWord);
     }
 
-    return <Manage role={true} list={stationList} searchFn={search} />
+    return <Manage judgeRole={true} list={stationList} searchFn={search} />
 }

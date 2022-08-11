@@ -3,7 +3,7 @@ import {Button, Input, Space, Table, Modal, Form, Cascader, message} from "antd"
 import {ColumnsType} from "antd/es/table";
 import './Manage.css'
 import {Role, RoleListItem} from "../../utils/interface";
-import {addStation} from "../../api/roleManageApi";
+import {add} from "../../api/roleManageApi";
 
 interface Option {
     value: string | number;
@@ -12,7 +12,7 @@ interface Option {
 }   // 级联选项
 interface Props {
     list: RoleListItem[]
-    role: boolean,  // true表站长管理, false表儿童主任管理
+    judgeRole: boolean,  // true表站长管理, false表儿童主任管理
     searchFn: (keyWord: string) => void,
 }
 type FormVal = {
@@ -57,22 +57,6 @@ const columns: ColumnsType<RoleListItem> = [
         </Space>
     },
 ];
-
-function formFinished(data: FormVal) {
-    const role: Role = {
-        name: data.name,
-        phone: data.phone,
-        province: "重庆市",
-        city: "重庆市",
-        district: data.organization[0],
-        street: data.organization[1],
-    };
-    addStation(role).then(res => {
-        return message.success(res.data.message);
-    }, err => {
-        return message.error(err.response.data.message);
-    })
-}
 
 // 组织选项
 const orgOptions: Option[] = [
@@ -142,7 +126,23 @@ export const Manage = (props: Props) => {
     const [searchKeyword, setSearchKeyword] = useState<string>("");
     const [isModalVisible, setIsModalVisible] = useState(false);
 
-    const {role, list, searchFn} = props; // 站长/主任
+    const {judgeRole, list, searchFn} = props; // 站长/主任
+
+    function formFinished(data: FormVal) {
+        const role: Role = {
+            name: data.name,
+            phone: data.phone,
+            province: "重庆市",
+            city: "重庆市",
+            district: data.organization[0],
+            street: data.organization[1],
+        };
+        add(role, judgeRole ? "station" : "director").then(res => {
+            return message.success(res.data.message);
+        }, err => {
+            return message.error(err.response.data.message);
+        })
+    }
 
     return (
         <section className="table-outer">
@@ -160,7 +160,7 @@ export const Manage = (props: Props) => {
                 <div className="right">
                     <Button type={"primary"} onClick={() => {
                         setIsModalVisible(true)
-                    }}>新增{role ? "站长" : "主任"}</Button>
+                    }}>新增{judgeRole ? "站长" : "主任"}</Button>
                 </div>
             </section>
 
@@ -173,7 +173,7 @@ export const Manage = (props: Props) => {
 
             <Modal
                 centered
-                title={"新增" + role ? "社区儿童主任" : "未成年人保护站站长"}
+                title={"新增" + judgeRole ? "社区儿童主任" : "未成年人保护站站长"}
                 visible={isModalVisible}
                 onCancel={() => setIsModalVisible(false)}
                 onOk={() => setIsModalVisible(false)}
