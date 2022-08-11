@@ -34,41 +34,45 @@ export default function Event() {
     const columns: ColumnsType<DataType> = [
         {
             title: "序号",
-            dataIndex: "number",
-            key: "number",
+            dataIndex: "key",
+            key: "key",
             align:'center'
         }, {
+            title: "事件Id",
+            dataIndex: "Id",
+            key: "id",
+            align: "center",
+        }, {
             title: "事件类型",
-            dataIndex: "type",
+            dataIndex: "Type",
             key: "type",
             align:'center'
         }, {
             title: "报告人手机号",
-            dataIndex: "phone",
+            dataIndex: "Phone",
             key: "phone",
-            
             align:'center'
         }, {
             title: "事件描述",
-            dataIndex: "detail",
+            dataIndex: "Detail",
             key: "detail",
             align:'center',
             render: (text, record, index) => <a onClick={() => showModal({record,text,index ,order:0})}>查看内容</a>,
         }, {
             title: "事件图片",
-            dataIndex: "picture",
+            dataIndex: "ImgUrl",
             key: "picture",
             align:'center',
             render: (text, record, index) => <a onClick={() => showModal({record,text,index ,order:0})}>查看内容</a>,
         }, {
             title: "事件视频",
             dataIndex: "video",
-            key: "video",
+            key: "VidUrl",
             align:'center',
             render: (text, record, index) => <a onClick={() => showModal({record,text,index ,order:0})}>查看内容</a>,
         }, {
             title: "处理状态",
-            dataIndex: "state",
+            dataIndex: "Status",
             key: "state",
             align:'center',
             render: (state: "1" | "2" | "3") => <span style={state==='1'?{'color':"green"}:state==='2'?{color:"#f9d217"}:{color:"red"}}>{stateMap[state]}</span>
@@ -80,11 +84,7 @@ export default function Event() {
         },
     ];
 
-    const [data, setData] = useState<DataType[]>([
-        {key: 1, number: 1, type: "非强制报告事件", phone: 111111111, state: "1"},
-        {key: 2, number: 2, type: "非强制报告事件", phone: 111111111, state: "2"},
-        {key: 3, number: 3, type: "非强制报告事件", phone: 111111111, state: "3"}
-    ]);
+    const [data, setData] = useState<DataType[]>([]);
     const [modalContent, setModalContent] = useState<ModalContent[]>(new Array(3).fill({visible: false,title:<span style={{color:"red"}}>我试试</span>}));
 
     interface itemType {
@@ -126,7 +126,6 @@ export default function Event() {
                     <p>{item.content}</p>
                 </Modal>)
             }
-
         </>
     )
 }
