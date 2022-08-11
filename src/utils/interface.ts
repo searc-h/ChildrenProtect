@@ -3,6 +3,7 @@ import React from "react";
 // 角色管理-列表项
 export interface RoleListItem {
     key: React.Key,
+    Key: number, // 后端说不好返回小写
     Number: number,
     Id: string,
     Name: string,

@@ -2,12 +2,8 @@ import {myAxios} from "./myAxios";
 import {Role} from "../utils/interface";
 
 // 显示站长人员列表
-export const getStationList = (current: number) => {
-    const data = new FormData();
-    data.append("current", current + '');
-    return myAxios("/station/list", {
-        data,
-    });
+export const getStationList = () => {
+    return myAxios("/station/list");
 }
 
 // 检索站长
@@ -30,12 +26,8 @@ export const add = (person: Role, role: "station" | "director") => {
 }
 
 // 显示儿童主任列表
-export const getDirectorList = (page: number = 1) => {
-    const data = new FormData();
-    data.append("current", page + '');
-    return myAxios("/director/list", {
-        data,
-    })
+export const getDirectorList = () => {
+    return myAxios("/director/list");
 }
 
 // 检索儿童主任

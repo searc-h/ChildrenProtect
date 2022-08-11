@@ -5,7 +5,6 @@ import {getDirectorList, searchDirector} from "../../api/roleManageApi";
 import {message} from "antd";
 
 export default function Director() {
-    const [currentPage, setCurrentPage] = useState<number>(1);
     const [list, setList] = useState<RoleListItem[]>([]);
     const [keyword, setKeyword] = useState<string>("");
 
@@ -15,16 +14,20 @@ export default function Director() {
 
     // 请求列表
     useEffect(() => {
-        getDirectorList(currentPage).then(res => {
-            setList(res.data.data.stationList);
+        getDirectorList().then(res => {
+            const list :RoleListItem[] = res.data.data.stationList;
+            list.forEach(item => {
+                item.key = item.Key;
+            })
+            setList(list);
         }, err => {
             return message.error(err.response.data.message);
         })
-    }, [currentPage])
+    }, [])
 
     // 检索
     useEffect(() => {
-        if (keyword === "") return;
+        if (keyword === "" || !keyword) return;
         searchDirector(keyword).then(res => {
             setList(res.data.message.data.directorList);
         }, err => {

@@ -24,7 +24,7 @@ type FormVal = {
 const columns: ColumnsType<RoleListItem> = [
     {
         title: "序号",
-        dataIndex: "Number",
+        dataIndex: "key",
         width: 100,
         align: 'center',
         key: "number",
@@ -167,7 +167,7 @@ export const Manage = (props: Props) => {
             <Table
                 columns={columns}
                 dataSource={list}
-                pagination={{pageSize: 50}}
+                pagination={{pageSize: 6}}
                 bordered
             />
 

@@ -3,7 +3,7 @@ import getToken from "../utils/getToken";
 
 export const myAxios = axios.create({
     baseURL: "http://124.223.99.4:8080",
-    timeout: 2000,
+    // timeout: 2000,
     method: "POST",  // 默认POST
 })
 

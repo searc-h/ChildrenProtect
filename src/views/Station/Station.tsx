@@ -6,31 +6,24 @@ import {RoleListItem} from "../../utils/interface";
 
 export default function Station() {
     const [stationList, setStationList] = useState<RoleListItem[]>([]);
-    const [requestPage, setRequestPage] = useState<number>(1);  // 请求页
     const [keyword, setKeyword] = useState<string>("");
 
     // 请求站长人员列表
     useEffect(() => {
-        getStationList(requestPage).then(res => {
+        getStationList().then(res => {
             const list :RoleListItem[] = res.data.data.stationList;
-            list.map(item => {  // add key prop
-                item = {
-                    ...item,
-                    key: item.Number,
-                }
-                return item;
+            list.forEach(item => {
+                item.key = item.Key;
             })
-            setStationList(res.data.data.stationList);
+            setStationList(list);
         }, err => {
             return message.error(err.response.data.message);
         });
-    }, [requestPage])
+    }, [])
 
     // 搜索
     useEffect(() => {
-        if (keyword === "") {
-            return;
-        }
+        if (keyword === "" || !keyword) return;
         searchStation(keyword).then(res => {
             console.log(res)
             setStationList(res.data.message.data.directorList);
