@@ -77,7 +77,7 @@
 
 - ### 卡片数据展示----数据预览
     ```bash
-        # GET请求    url:/api/admin/showDataCard
+        # POST请求    url:/api/admin/showDataCard
 
         # 请求参数:
         {
@@ -98,7 +98,7 @@
 
 - ### 地图数据展示----数据预览
     ```bash
-        # GET请求    url:/api/admin/showDataMap
+        # POST请求    url:/api/admin/showDataMap
 
         # 请求参数:
         {
@@ -135,7 +135,7 @@
 
 - ### 站长人员展示----站长管理
     ```bash
-        # GET请求    url:/api/station/list
+        # POST请求    url:/api/station/list
 
         # 请求参数:
         {
@@ -152,21 +152,21 @@
                 size:10,    // 每页数据最大数量
                 stationList:[
                     {
-                        number:1,   //这个是序号，指定表格中的顺序
+                        number:1,   //这个是序号,指定表格中的顺序
                         id: 78641qweas,
                         phone:123231213,
                         name:"李家然",
                         organization:"重庆市渝北区宝圣湖街道",
                     },
                     {
-                        number:2，
+                        number:2,
                         id: 135asdq2da,
                         phone:12323321,
                         name:"李家星",
                         organization:"重庆市渝北区宝圣湖街道",
                     },
                     {
-                        number:3，
+                        number:3,
                         id: d123asd45,
                         phone:1433231213,
                         name:"李家成",
@@ -194,7 +194,7 @@
             message:string,
             data:{
                 totalPage:1,   // 页码总数,基本上是1
-                current:1,  // 当前页码，基本上是1
+                current:1,  // 当前页码,基本上是1
                 size:10,    // 每页数据最大数量
                 stationList:[]
             }
@@ -536,7 +536,7 @@
 
 - ### 查看详情----事件管理(补充)
 ```bash
-    # GET请求    url:/api/event/detail?eventId='123431'
+    # POST请求    url:/api/event/detail?eventId='123431'
 
     # 请求参数:
     {
