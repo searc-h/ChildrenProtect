@@ -1,47 +1,36 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { Manage } from "../../components";
-
-interface DataType {
-    key: React.Key,
-    number: number,
-    name: string,
-    phone: string | number,
-    organization: string,
-    op?: string, /*操作?*/
-}
+import {RoleListItem} from "../../utils/interface";
+import {getDirectorList, searchDirector} from "../../api/roleManageApi";
+import {message} from "antd";
 
 export default function Director() {
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [list, setList] = useState<RoleListItem[]>([]);
+    const [keyword, setKeyword] = useState<string>("");
 
-    let directorList: DataType[] = [
-        {
-            number: 1,
-            phone: '123431',
-            name: 'React',
-            key: '1',
-            organization: '重庆市渝北区宝胜街道处',
-        },
-        {
-            number: 2,
-            phone: '123431',
-            name: 'React',
-            key: '2',
-            organization: '重庆市渝北区宝胜街道处',
-        },
-        {
-            number: 3,
-            phone: '123431',
-            name: 'React',
-            key: '3',
-            organization: '重庆市渝北区宝胜街道处',
-        },
-        {
-            number: 4,
-            phone: '123431',
-            name: 'React',
-            key: '4',
-            organization: '重庆市渝北区宝胜街道处',
-        }
-    ]
+    function search(keyWord: string) {
+        setKeyword(keyWord);
+    }
 
-    return <Manage role={false} list={directorList} />
+    // 请求列表
+    useEffect(() => {
+        getDirectorList(currentPage).then(res => {
+            setList(res.data.data.stationList);
+        }, err => {
+            return message.error(err.response.data.message);
+        })
+    }, [currentPage])
+
+    // 检索
+    useEffect(() => {
+        if (keyword === "") return;
+        searchDirector(keyword).then(res => {
+            setList(res.data.message.data.directorList);
+        }, err => {
+            return message.error(err.response.data.message);
+        })
+    }, [keyword])
+
+    return <Manage judgeRole={false} list={list} searchFn={search}/>
 }
