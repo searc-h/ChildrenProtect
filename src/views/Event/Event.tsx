@@ -1,8 +1,9 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
-import {Modal, Table} from "antd";
+import {message, Modal, Table} from "antd";
 import {ColumnsType} from "antd/es/table";
 import { useNavigate } from 'react-router-dom';
+import {getList} from "../../api/eventApi";
 
 interface DataType {
     key: React.Key,
@@ -110,6 +111,15 @@ export default function Event() {
             });
         })
     }
+
+    // 请求事件列表
+    useEffect(() => {
+        getList(1).then(res => {
+            setData(res.data.data.stationList)
+        }, err => {
+            return message.error(err.response.data.message);
+        })
+    }, [])
 
     return (
         <>

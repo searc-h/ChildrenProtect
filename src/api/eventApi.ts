@@ -7,7 +7,7 @@ export const getList = (page: number) => {
     return myAxios.post("/event/list", data)
 }
 
-// 检索事件
+// 电话检索事件
 export const searchEvent = (keyword: string) => {
     const data = new FormData();
     data.append("keyword", keyword);
