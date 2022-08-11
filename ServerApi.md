@@ -534,4 +534,59 @@
     ```
 
 
-- ### 查看详情----事件管理（展示不做）
+- ### 查看详情----事件管理(补充)
+```bash
+    # GET请求    url:/api/event/detail?eventId='123431'
+
+    # 请求参数:
+    {
+        eventId:"123431" 
+    }
+
+    # 返回数据:
+    {
+        code:number,
+        message:string,
+        data:{
+            # 上报信息
+            postInfo:{
+                type:'0',
+                des:"下午两点。。。",  # 描述
+                time:'2022-07-19 11:30:32',
+                vedioUrl:'http://',
+                imgUrl:'http://',
+                where:"渝北区小学"
+            },
+            # 处置信息
+            resolveInfo:{
+                type:'0',
+                process:"下午两点。。。",  # 处置信息
+                where:"渝北区小学",
+                childList:[
+                    {
+                        name:'',
+                        sex:'男',
+                        id:'500213'
+                    },
+                    {
+                        name:'',
+                        sex:'男',
+                        id:'500213'
+                    }
+                ],
+                adultList:[
+                    {
+                        name:'',
+                        sex:'男',
+                        id:'500213'
+                    },
+                    {
+                        name:'',
+                        sex:'男',
+                        id:'500213'
+                    }
+                ]
+            }
+        }
+    }
+```
