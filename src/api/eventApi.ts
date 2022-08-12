@@ -16,5 +16,7 @@ export const searchEvent = (keyword: string) => {
 
 // 事件详情
 export const getDetail = (eventId: string) => {
-    return myAxios.post("/event/detail/eventId=" + eventId);
+    const data = new FormData();
+    data.append("id", eventId);
+    return myAxios("/event/detail", {data});
 }

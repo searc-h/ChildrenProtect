@@ -1,27 +1,58 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { RightOutlined } from '@ant-design/icons'
-import { Button } from 'antd'
+import {Button, message} from 'antd'
 import './Detail.css'
-import { useRef, useEffect } from 'react'
+import {useRef, useEffect, useState} from 'react'
 import marker from '../../assets/icons/marker.png'
+import {getDetail} from "../../api/eventApi";
 
 interface PList {
-  name: string,
-  sex: string,
-  id: string
+  Name: string,
+  Sex: string,
+  Id: string
 }
 interface listProps {
   List: PList[]
+}
+const eventTypeMap = {
+    0: "非强制事件",
+    1: "未成年人乞讨",
+    2: "未成年人犯罪",
+    3: "未成年人被遗弃",
+    4: "未成年人隐私部位损伤",
+    5: "未成年人伤残、死亡",
+    6: "未成年人来源不明",
+    7: "未成年人怀孕、流产",
+    8: "其他非强制报告事件",
+}
+type EventTypeIndex = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8';
+interface PostInfo {
+    EventType: EventTypeIndex,  // 事件类型
+    PostTime: string,   // 上报时间
+    Description: string,    // 事件描述
+    VideoUrl: string,
+    ImageUrl: string,
+    Lat: number,
+    Lon: number,
+}
+interface ResInfo {
+    BasicResolve: {
+        Process: string,    // 事件经过
+        EventType: EventTypeIndex,
+        Organization: string,
+    }
+    ChildList: Array<PList>,  // 涉及到未成年人
+    AdultList: Array<PList>,  // 涉及到成年人
 }
 function personList(props: listProps) {
   let { List } = props
   return (
     List.map((list) => {
       return (
-        <div className="list" key={list.id} style={{ display: 'flex', width: '300px', justifyContent: "space-between" }}>
-          <div className="name">{list.name}</div>
-          <div className="sex">{list.sex}</div>
-          <div className="id">{list.id}</div>
+        <div className="list" key={list.Id} style={{ display: 'flex', width: '300px', justifyContent: "space-between" }}>
+          <div className="name">{list.Name}</div>
+          <div className="sex">{list.Sex}</div>
+          <div className="id">{list.Id}</div>
         </div>
       )
     })
@@ -57,7 +88,7 @@ function MyMap(props: mapProps) {
       map.addOverlay(Pointer)
     })
 
-  }, [mapList])
+  }, [mapList, mapRef])
 
   return (
     <div id='mymap' style={{ "width": "100%", "height": "100%", "textAlign": "center", "boxShadow": "0px 0px 10px rgba(0,0,0,0.2)", zIndex: "99" }}>
@@ -66,39 +97,15 @@ function MyMap(props: mapProps) {
 }
 
 export default function Detail() {
+    const [postInfo, setPostInfo] = useState<PostInfo>();   // 上传信息
+    const [resInfo, setResInfo] = useState<ResInfo>();   // 处置信息
 
   let location = useLocation()
   let state = location.state as any
-  let id: number | string = state.id
-  console.log(id)
+  let id: string = state.id
 
   let map1 =  useRef(null)
   let map2 = useRef(null)
-
-  let childList: PList[] = [
-    {
-      name: "张勇",
-      sex: "男",
-      id: "521101200010092837"
-    },
-    {
-      name: "王丽",
-      sex: "女",
-      id: "521104200010092837"
-    }
-  ]
-  let adultList: PList[] = [
-    {
-      name: "张超勇",
-      sex: "男",
-      id: "521101200010092837"
-    },
-    {
-      name: "王美丽",
-      sex: "女",
-      id: "521104200010092837"
-    }
-  ]
 
   let mapListOld: map[] = [
     {
@@ -117,6 +124,18 @@ export default function Detail() {
   let goBack = () => {
     navigate(-1)
   }
+
+  // 请求事件详情
+  useEffect(() => {
+    if (!id) return message.warn("事件ID获取失败");
+    getDetail(id).then(res => {
+        const {PostInfo, ResolveInfo} = res.data.data;
+        setPostInfo(PostInfo);
+        setResInfo(ResolveInfo);
+    }, err => {
+        return message.error(err.response.data.message);
+    })
+  }, [id])
   return (
     <>
       <div className='detail-outer'>
@@ -129,15 +148,17 @@ export default function Detail() {
             <div className="content">
               <div className="line1">
                 <div className="left">
-                  事件类型：<span >发现未成年人被组织乞讨</span>
+                  事件类型：<span >{eventTypeMap[postInfo?.EventType || '0']}</span>
                   <div className="right">
-                    上报时间：<span>2022-07-19 11:30:32</span>
+                    上报时间：<span>{postInfo?.PostTime}</span>
                   </div>
                 </div>
               </div>
               <div className="line2">
                 <div className="left">
-                  事件描述：<span style={{ "textDecoration": "underline" }}>下午2点左右，在宝圣湖小学大门外100米处，一个年纪在15岁左右的未成年人在乞讨，希望可以派工作人员前往了解情况一个年纪在15岁左右的未成年人在乞讨，希望可以派工作人员前往了解情况一个年纪在15岁左右的未成年人在乞讨，希望可以派工作人员前往了解情况一个年纪在15岁左右的未成年人在乞讨，希望可以派工作人员前往了解情况一个年纪在15岁左右的未成年人在乞讨，希望可以派工作人员前往了解情况</span>
+                  事件描述：<span style={{ "textDecoration": "underline" }}>
+                    {postInfo?.Description}
+                </span>
                 </div>
               </div>
               <div className="line3">
@@ -147,7 +168,7 @@ export default function Detail() {
                 现场照片：<span><span><Button type='primary'><span style={{ color: '#fff' }}>查看照片</span></Button></span></span>
               </div>
               <div className="line5">
-                事件发生位置： <span>渝北区宝圣湖小学校</span>
+                事件发生位置： <span />
               </div>
 
               <div className="mapSite1 mapSite" ref={map1}>
@@ -161,16 +182,16 @@ export default function Detail() {
             </div>
             <div className="content">
               <div className="line">
-                <span className="title">事件经过：</span><span>下午两点左右，在宝圣湖小学大门外100米处，一个年级在15岁左右的未成年人在乞讨</span>
+                  <span className="title">事件经过：</span><span>{resInfo?.BasicResolve.Process}</span>
               </div>
               <div className="line">
-                <span className="title">设计到的未成年人：</span><span>{personList({ List: childList })}</span>
+                <span className="title">设计到的未成年人：</span><span>{personList({ List: resInfo?.ChildList || [] })}</span>
               </div>
               <div className="line">
-                <span className="title">涉及到的成年人：</span><span>{personList({ List: adultList })}</span>
+                <span className="title">涉及到的成年人：</span><span>{personList({ List: resInfo?.AdultList || [] })}</span>
               </div>
               <div className="line">
-                <span className="title">修订后的位置：</span><span>渝北区宝圣湖小学校</span>
+                <span className="title">修订后的位置：</span><span />
               </div>
               <div className="mapSite2 mapSite" ref={map2}>
                 <MyMap mapList={mapListNew} mapRef={map2}/>

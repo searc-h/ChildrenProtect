@@ -2,12 +2,13 @@ import React, {useEffect, useState} from 'react'
 
 import {message, Modal, Table} from "antd";
 import {ColumnsType} from "antd/es/table";
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {getList} from "../../api/eventApi";
 
 interface DataType {
     key: React.Key,
     Number: number,
+    Id: string, // 事件id
     Type: string,
     Phone: string,
     Detail: string,
@@ -56,9 +57,12 @@ export default function Event() {
             dataIndex: "Detail",
             key: "detail",
             align:'center',
-            render: (text, record, index) => <a
-                onClick={() => showModal({record,text,index ,order:0})}
-            >查看内容</a>,
+            render: (text, record, index) => <Link
+                to={"/home/detail"}
+                state={{
+                    id: record.Id,
+                }}
+            >查看内容</Link>,
         }, {
             title: "事件图片",
             dataIndex: "ImgUrl",
