@@ -7,14 +7,13 @@ import {getList} from "../../api/eventApi";
 
 interface DataType {
     key: React.Key,
-    number: number,
-    type: string,
-    phone: number,
-    detail?: string,
-    picture?: string,
-    video?: string,
-    state: string,
-    op?: string, /*操作?*/
+    Number: number,
+    Type: string,
+    Phone: string,
+    Detail: string,
+    ImgUrl: string,
+    VidUrl: string,
+    Status: string
 }
 interface ModalContent {
     visible: boolean,
@@ -23,9 +22,8 @@ interface ModalContent {
 }
 
 const stateMap = {
-    1: "已处理",
-    2: "正在处理",
-    3: "未处理",
+    0: "已处理",
+    1: "未处理",
 }
 
 export default function Event() {
@@ -58,7 +56,9 @@ export default function Event() {
             dataIndex: "Detail",
             key: "detail",
             align:'center',
-            render: (text, record, index) => <a onClick={() => showModal({record,text,index ,order:0})}>查看内容</a>,
+            render: (text, record, index) => <a
+                onClick={() => showModal({record,text,index ,order:0})}
+            >查看内容</a>,
         }, {
             title: "事件图片",
             dataIndex: "ImgUrl",
@@ -76,7 +76,11 @@ export default function Event() {
             dataIndex: "Status",
             key: "state",
             align:'center',
-            render: (state: "1" | "2" | "3") => <span style={state==='1'?{'color':"green"}:state==='2'?{color:"#f9d217"}:{color:"red"}}>{stateMap[state]}</span>
+            render: (state: "1" | "0") => <span
+                style={state === '0'
+                    ? {color:"green"}
+                    : {color:"red"}}
+            >{stateMap[state]}</span>
         }, {
             title: "操作",
             key: "op",
@@ -95,7 +99,7 @@ export default function Event() {
         index?:number
     }
     function showModal(item:itemType) {
-        let {order ,record} = item
+        let {order} = item
 
         setModalContent(arr => {
             const res = [...arr];
@@ -115,7 +119,11 @@ export default function Event() {
     // 请求事件列表
     useEffect(() => {
         getList(1).then(res => {
-            setData(res.data.data.stationList)
+            const list: DataType[] = res.data.data.stationList;
+            list.forEach(item => {
+                item.key = item.Number;
+            })
+            setData(list)
         }, err => {
             return message.error(err.response.data.message);
         })
