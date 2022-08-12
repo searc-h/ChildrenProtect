@@ -119,8 +119,8 @@ export default function Data() {
       lat: number,
     }
     const [center, setCenter] = useState<Coordinate>({
-      ing: 106.5907,
-      lat: 29.7320,
+      ing: 106.5507,
+      lat: 29.57320,
     }); // 地图中心点
 
     useEffect(() => { // 已返回任一点为中心点

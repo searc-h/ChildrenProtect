@@ -73,8 +73,15 @@ function MyMap(props: mapProps) {
   let { mapList ,mapRef} = props
   useEffect(() => {
     let map = new BMapGL.Map(mapRef.current);
-    map.centerAndZoom(new BMapGL.Point(106.5907, 29.7320), 16);
+    let pointer = new BMapGL.Point(106.5907, 29.7320)
+    let Marker = new BMapGL.Marker(pointer)
+    map.addOverlay(Marker)
+    map.centerAndZoom(pointer, 16);
     map.enableScrollWheelZoom();
+    let scaleCtrl = new BMapGL.ScaleControl();  // 添加比例尺控件
+    map.addControl(scaleCtrl);
+    let zoomCtrl = new BMapGL.ZoomControl();  // 添加缩放控件
+    map.addControl(zoomCtrl);
 
     let markerIcon = new BMapGL.Icon(marker, new BMapGL.Size(52, 26));
 
