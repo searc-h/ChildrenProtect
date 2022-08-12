@@ -28,7 +28,7 @@ export default  function Home(){
                 </Routes>
             </Suspense>
             
-            <Outlet></Outlet>
+            <Outlet/>
         </MainLayout>
     )
 }

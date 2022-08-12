@@ -25,8 +25,8 @@ function App() {
                         </Auth>}
                     />
                     <Route path={"/login"} element={<Login />} />
-                    <Route path='/getback' element={<GetBack></GetBack>}></Route>
-                    <Route path='/setpassword' element={<SetPassword></SetPassword>}></Route>
+                    <Route path='/getback' element={<GetBack/>}/>
+                    <Route path='/setpassword' element={<SetPassword/>}/>
                     <Route path='/' element={<Navigate to={'/home'}/>}/>
 
                 </Routes>
