@@ -5,6 +5,7 @@ import './Login.css'
 import {login as loginApi} from "../../api/loginApi";
 import {message} from "antd";
 import setId from "../../utils/setId";
+import setPhone from "../../utils/setPhone";
 
 export default function Login() {
   let [isRight, setIsRight] = useState<boolean>(true)
@@ -17,6 +18,7 @@ export default function Login() {
       setIsRight(true)
       setToken(res.data.data.token);
       setId(res.data.data.id);
+      setPhone(username);
       setTimeout(() => {
         navigate('/home/data')
       }, 0);
