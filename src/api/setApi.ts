@@ -14,13 +14,14 @@ export const modifyPhone = (id: string, phone: string, code: string) => {
     data.append("id", id);
     data.append("newPhone", phone);
     data.append("code", code);
-    return myAxios.post("/admin/getCode", data)
+    return myAxios.post("/admin/modifyPhone", data)
 }
 
 // 修改密码
-export const modifyPwd = (id: string, pwd: string) => {
+export const modifyPwd = (id: string, oldPwd: string, newPwd: string) => {
     const data = new FormData();
     data.append("id", id);
-    data.append("newPassword", pwd);
-    return myAxios.post("/admin/getCode", data)
+    data.append("oldPassword", oldPwd);
+    data.append("newPassword", newPwd);
+    return myAxios.post("/admin/modifyPassword", data)
 }

@@ -147,26 +147,23 @@
             code:number,
             message:string,
             data:{
-                totalPage:10,   // 页码总数
-                current:1,  // 当前页码
-                size:10,    // 每页数据最大数量
                 stationList:[
                     {
-                        number:1,   //这个是序号,指定表格中的顺序
+                        Key:1,   //这个是序号,指定表格中的顺序
                         id: 78641qweas,
                         phone:123231213,
                         name:"李家然",
                         organization:"重庆市渝北区宝圣湖街道",
                     },
                     {
-                        number:2,
+                        Key:2,
                         id: 135asdq2da,
                         phone:12323321,
                         name:"李家星",
                         organization:"重庆市渝北区宝圣湖街道",
                     },
                     {
-                        number:3,
+                        Key:3,
                         id: d123asd45,
                         phone:1433231213,
                         name:"李家成",
@@ -288,21 +285,21 @@
                 size:10,    // 每页数据最大数量
                 stationList:[
                     {
-                        number:1,   //这个是序号，指定表格中的顺序
+                        Key:1,   //这个是序号，指定表格中的顺序
                         id: 78641qweas,
                         phone:123231213,
                         name:"李家然",
                         organization:"重庆市渝北区宝圣湖街道",
                     },
                     {
-                        number:2，
+                        Key:2，
                         id: 135asdq2da,
                         phone:12323321,
                         name:"李家星",
                         organization:"重庆市渝北区宝圣湖街道",
                     },
                     {
-                        number:3，
+                        Key:3，
                         id: d123asd45,
                         phone:1433231213,
                         name:"李家成",
