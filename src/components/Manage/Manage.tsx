@@ -357,17 +357,40 @@ export const Manage = (props: Props) => {
             editable: true,
         }, {
             title: "手机号",
-            width: 300,
+            width: 500,
             align: 'center',
             dataIndex: "Phone",
             key: "phone",
             editable: true,
         }, {
-            title: "所属组织",
-            width: 500,
+            title: "省份",
+            width: 300,
             align: 'center',
-            dataIndex: "Organization",
-            key: "organization",
+            dataIndex: "Province",
+            key: "province",
+            editable: false,
+            render: () => <span>重庆</span>
+        }, {
+            title: "城市",
+            width: 300,
+            align: 'center',
+            dataIndex: "City",
+            key: "city",
+            editable: false,
+            render: () => <span>重庆</span>
+        }, {
+            title: "区县",
+            width: 300,
+            align: 'center',
+            dataIndex: "District",
+            key: "district",
+            editable: true,
+        }, {
+            title: "街道",
+            width: 300,
+            align: 'center',
+            dataIndex: "Street",
+            key: "street",
             editable: true,
         }, {
             title: "操作",

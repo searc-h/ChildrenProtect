@@ -8,7 +8,11 @@ export interface RoleListItem {
     Id: string,
     Name: string,
     Phone: string,
-    organization: string,
+    // organization: string,
+    Province: "重庆市",
+    City: "重庆市",
+    District: string,
+    Street: string,
 }
 
 // 新增信息
