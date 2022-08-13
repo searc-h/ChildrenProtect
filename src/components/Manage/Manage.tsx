@@ -3,7 +3,8 @@ import {Button, Input, Space, Table, Modal, Form, Cascader, message, Typography,
 import {ColumnsType} from "antd/es/table";
 import './Manage.css'
 import {Role, RoleListItem} from "../../utils/interface";
-import {add, removeRole} from "../../api/roleManageApi";
+import {add, modifyInfo, removeRole} from "../../api/roleManageApi";
+import getId from "../../utils/getId";
 
 interface Option {
     value: string | number;
@@ -332,12 +333,35 @@ export const Manage = (props: Props) => {
 
     }
 
+    // 编辑选中行
+    const editRow = (record: RoleListItem) => {
+        form.setFieldsValue(record);
+        setEditingKey(record.Key);
+    }
     // 判断当前行是否在编辑
     const isEditing = (key: number): boolean => key === editingKey;
 
     // 保存编辑
-    const save = (record: RoleListItem) => {
-        console.log(record)
+    const save = async (record: RoleListItem) => {
+        const row = (await form.validateFields()) as RoleListItem;
+        const newList: RoleListItem[] = [...list];
+        const index = newList.findIndex(item => record.key === item.key);
+        const item = newList[index];    // 被编辑行
+        newList.splice(index, 1, {
+            ...item,
+            ...row,
+        });
+        // 请求
+        const id = getId();
+        if (!id) return message.warn("Id获取失败");
+        modifyInfo(id, item, judgeRole ? "station" : "director")
+            .then(res => {
+                console.log(res)
+                updateList();
+            }, err => {
+                return message.error(err.response.data.message);
+            })
+        setEditingKey(-1);
     }
 
     const columns = [
@@ -407,7 +431,7 @@ export const Manage = (props: Props) => {
                             Cancel
                         </Popconfirm></>
                     : <>
-                        <Button onClick={() => setEditingKey(record.Key)} style={{color: 'green'}}>编辑</Button>
+                        <Button onClick={() => editRow(record)} style={{color: 'green'}}>编辑</Button>
                         <Button onClick={() => reqRemoveRole(record.Id)} style={{color: 'red'}}> 删除</Button>
                     </>
                 }
@@ -529,7 +553,8 @@ const EditableCell: React.FC<EditableCellProps> = ({
 }) => {
     return <td {...restProps}>
         {editing ? (
-            <Form.Item name={dataIndex}>
+            <Form.Item
+                name={dataIndex}>
                 <Input />
             </Form.Item>
         ) : children}
