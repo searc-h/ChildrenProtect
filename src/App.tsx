@@ -1,6 +1,6 @@
 import {lazy, Suspense} from 'react';
 
-import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
+import {HashRouter, Navigate, Route, Routes} from "react-router-dom";
 import './App.css';
 // import 'antd/dist/antd.css';
 
@@ -16,7 +16,7 @@ function App() {
 
 
     return (
-        <BrowserRouter>
+        <HashRouter basename={"/"}>
             <Suspense fallback={<Loading/>}>
                 <Routes>
                     {/* 这里的加了鉴权组件，把需要鉴权后才展示的组件放进去 */}
@@ -28,10 +28,10 @@ function App() {
                     <Route path={"/login"} element={<Login/>}/>
                     <Route path='/getback' element={<GetBack/>}/>
                     <Route path='/setpassword' element={<SetPassword/>}/>
-                    <Route path='/' element={<Link to={'/home'}/>}/>
+                    <Route path='*' element={<Navigate to={"/home"} replace /> }/>
                 </Routes>
             </Suspense>
-        </BrowserRouter>
+        </HashRouter>
     );
 }
 
