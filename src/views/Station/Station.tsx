@@ -11,13 +11,13 @@ export default function Station() {
     // 更新列表
     function updateList(){
         getStationList().then(res => {
-            const list :RoleListItem[] = res.data.stationList;
+            const list :RoleListItem[] =( res as any).stationList;
             list.forEach(item => {
                 item.key = item.Key;
             })
             setStationList(list);
         }, err => {
-            return message.error(err.response.message);
+            return message.error(err.message);
         });
     }
 
@@ -30,10 +30,10 @@ export default function Station() {
     useEffect(() => {
         if (keyword === "" || !keyword) return;
         searchStation(keyword).then(res => {
-            console.log(res)
-            setStationList(res.data.message.data.directorList);
+
+            setStationList((res as any).directorList);
         }, err => {
-            return message.error(err.response.data.message);
+            return message.error(err.message);
         })
     }, [keyword])
 

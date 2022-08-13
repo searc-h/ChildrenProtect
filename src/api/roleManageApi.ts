@@ -22,6 +22,10 @@ export const add = (person: Role, role: "station" | "director") => {
     data.append("city", person.city);
     data.append("district", person.district);
     data.append("street", person.street);
+    // 如果有社区
+    if(person.community){
+        data.append("community", person.community);
+    }
     return myAxios.post('/' + role + "/add", data)
 }
 

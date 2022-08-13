@@ -33,7 +33,8 @@ myAxios.interceptors.response.use(
 
 
 	(error) => {
+        let errorMes = error.response.data
 		// 对响应错误做点什么
-		return Promise.reject(error);
+		throw(new Error(errorMes.message))
 	}
 );
