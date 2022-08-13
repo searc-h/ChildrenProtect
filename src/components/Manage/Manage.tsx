@@ -420,6 +420,7 @@ export const Manage = (props: Props) => {
                         onChange={e => setSearchKeyword(e.target.value)}
                     />
                     <Button type='primary' onClick={() => searchFn(searchKeyword)}>搜索</Button>
+                    <Button type='dashed' onClick={() => updateList()}>重置</Button>
                 </div>
                 <div className="right">
                     <Button type={"primary"} onClick={() => {
