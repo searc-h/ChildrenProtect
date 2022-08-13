@@ -15,7 +15,7 @@ export default function Director() {
     // 更新列表
     function updateList(){
         getDirectorList().then(res => {
-            const list :RoleListItem[] = res.data.stationList;
+            const list :RoleListItem[] = res.data.directorList;
             list.forEach(item => {
                 item.key = item.Key;
             })
