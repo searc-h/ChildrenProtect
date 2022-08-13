@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react'
 
-import {message, Modal, Table} from "antd";
+import {Button, message, Modal, Table} from "antd";
 import {ColumnsType} from "antd/es/table";
-import {Link, useNavigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {getList} from "../../api/eventApi";
 
 interface DataType {
@@ -28,8 +28,6 @@ const stateMap = {
 }
 
 export default function Event() {
-
-    let navigate = useNavigate()
 
     const columns: ColumnsType<DataType> = [
         {
@@ -57,24 +55,25 @@ export default function Event() {
             dataIndex: "Detail",
             key: "detail",
             align:'center',
-            render: (text, record, index) => <Link
-                to={"/home/detail"}
-                state={{
-                    id: record.Id,
-                }}
-            >查看内容</Link>,
+            render: (text, record) => <Button
+                type={"link"}
+                onClick={() => showModal("事件描述", record.Detail)}>查看内容</Button>,
         }, {
             title: "事件图片",
             dataIndex: "ImgUrl",
             key: "picture",
             align:'center',
-            render: (text, record, index) => <a onClick={() => showModal({record,text,index ,order:0})}>查看内容</a>,
+            render: (text, record) => <Button
+                type={"link"}
+                onClick={() => showModal("查看图片", record.VidUrl)}>查看图片</Button>,
         }, {
             title: "事件视频",
             dataIndex: "video",
             key: "VidUrl",
             align:'center',
-            render: (text, record, index) => <a onClick={() => showModal({record,text,index ,order:0})}>查看内容</a>,
+            render: (text, record) => <Button
+                type={"link"}
+                onClick={() => showModal("查看视频", record.VidUrl)}>查看视频</Button>,
         }, {
             title: "处理状态",
             dataIndex: "Status",
@@ -89,36 +88,34 @@ export default function Event() {
             title: "操作",
             key: "op",
             align:'center',
-            render: () => <a onClick={() => {navigate('/home/detail' , {replace:false, state:{id:1001}})}}>查看详情</a>,
+            render: (text, record) => <Link
+                to={"/home/detail"}
+                state={{
+                    id: record.Id,
+                }}
+            >查看详情</Link>
         },
     ];
 
     const [data, setData] = useState<DataType[]>([]);
-    const [modalContent, setModalContent] = useState<ModalContent[]>(new Array(3).fill({visible: false,title:<span style={{color:"red"}}>我试试</span>}));
+    const [modalContent, setModalContent] = useState<ModalContent>({
+        visible: false,
+        title: "",
+        content: "",
+    });
 
-    interface itemType {
-        order:number,
-        text?:string,
-        record:DataType,
-        index?:number
-    }
-    function showModal(item:itemType) {
-        let {order} = item
-
-        setModalContent(arr => {
-            const res = [...arr];
-            res[order].visible = true;
-            return res;
+    const showModal = (title: string, content?: string) => {
+        setModalContent({
+            content: content || "暂无内容",
+            title: title || "查看",
+            visible: true,
         })
     }
-    function handle() {
-        setModalContent(arr => {
-            return arr.map(item => {
-                item.visible = false;
-                return item;
-            });
-        })
-    }
+    const handle = () => setModalContent({
+        visible: false,
+        content: "暂无",
+        title: "查看",
+    })
 
     // 请求事件列表
     useEffect(() => {
@@ -136,18 +133,15 @@ export default function Event() {
     return (
         <>
             <Table columns={columns} dataSource={data}/>
-            {modalContent?.map((item, index) =>
-                <Modal
-                    centered
-                    visible={item.visible}
-                    title={item.title}
-                    onOk={handle}
-                    onCancel={handle}
-                    key={index}
-                >
-                    <p>{item.content}</p>
-                </Modal>)
-            }
+            <Modal
+                centered
+                visible={modalContent.visible}
+                title={modalContent.title}
+                onOk={handle}
+                onCancel={handle}
+            >
+                <p>{modalContent.content}</p>
+            </Modal>
         </>
     )
 }
