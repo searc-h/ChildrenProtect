@@ -10,8 +10,10 @@ export default function Station() {
 
     // 更新列表
     function updateList(){
+
         getStationList().then(res => {
-            const list :RoleListItem[] =( res as any).stationList;
+            console.log(res)
+            const list :RoleListItem[] =( res as any).data.stationList;
             list.forEach(item => {
                 item.key = item.Key;
             })
