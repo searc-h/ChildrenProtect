@@ -16,16 +16,16 @@ export default function Login() {
     // 登录逻辑
     loginApi(username, password).then(res => {
       setIsRight(true)
-      setToken(res.data.data.token);
-      setId(res.data.data.id);
+      setToken(res.data.token);
+      setId(res.data.id);
       setPhone(username);
       setTimeout(() => {
         navigate('/home/data')
       }, 0);
-      return message.success(res.data.message);
+      return message.success((res as any).message);
     }).catch(err => {
       setIsRight(false)
-      return message.error(err.response.data.message);
+      return message.error(err.message);
     })
   }
 

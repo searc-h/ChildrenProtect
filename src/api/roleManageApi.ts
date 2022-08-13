@@ -22,7 +22,18 @@ export const add = (person: Role, role: "station" | "director") => {
     data.append("city", person.city);
     data.append("district", person.district);
     data.append("street", person.street);
+    // 如果有社区
+    if(person.community){
+        data.append("community", person.community);
+    }
     return myAxios.post('/' + role + "/add", data)
+}
+
+// 移除 站长/儿童主任
+export const removeRole = (id:string, role: "station" | "director") => {
+    const data = new FormData();
+    data.append("id", id);
+    return myAxios.post('/' + role + "/remove", data)
 }
 
 // 显示儿童主任列表

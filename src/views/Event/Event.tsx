@@ -120,13 +120,13 @@ export default function Event() {
     // 请求事件列表
     useEffect(() => {
         getList(1).then(res => {
-            const list: DataType[] = res.data.data.stationList;
+            const list: DataType[] = res.data.stationList;
             list.forEach(item => {
                 item.key = item.Number;
             })
             setData(list)
         }, err => {
-            return message.error(err.response.data.message);
+            return message.error(err.response.message);
         })
     }, [])
 

@@ -19,4 +19,5 @@ export interface Role {
     city: string,   // 市
     district: string,   // 区
     street: string,
+    community?:string
 }
