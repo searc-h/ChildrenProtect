@@ -296,7 +296,8 @@ const orgOptionDirector: Option[] = [
 export const Manage = (props: Props) => {
     const [searchKeyword, setSearchKeyword] = useState<string>("");
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [editingKey, setEditingKey] = useState<number>(-1);   // 正编辑行
+    const [editModalVisible, setEditModalVisible] = useState(false);
+
     const [form] = Form.useForm();
 
     const {judgeRole, list, searchFn, updateList} = props; // 站长/主任
@@ -334,34 +335,27 @@ export const Manage = (props: Props) => {
     }
 
     // 编辑选中行
-    const editRow = (record: RoleListItem) => {
-        form.setFieldsValue(record);
-        setEditingKey(record.Key);
+    const edit = (record: RoleListItem) => {
+        setEditModalVisible(true);
+        form.setFieldsValue({
+            ...record
+        })
     }
-    // 判断当前行是否在编辑
-    const isEditing = (key: number): boolean => key === editingKey;
 
     // 保存编辑
-    const save = async (record: RoleListItem) => {
-        const row = (await form.validateFields()) as RoleListItem;
-        const newList: RoleListItem[] = [...list];
-        const index = newList.findIndex(item => record.key === item.key);
-        const item = newList[index];    // 被编辑行
-        newList.splice(index, 1, {
-            ...item,
-            ...row,
-        });
-        // 请求
-        const id = getId();
-        if (!id) return message.warn("Id获取失败");
-        modifyInfo(id, item, judgeRole ? "station" : "director")
+    const save = async () => {
+        form.validateFields().then(val => {
+            const id = getId();
+            if (!id) return message.warn("Id获取失败");
+            modifyInfo(id, val, judgeRole ? "station" : "director")
             .then(res => {
                 console.log(res)
                 updateList();
             }, err => {
                 return message.error(err.response.data.message);
             })
-        setEditingKey(-1);
+        })
+        setEditModalVisible(false);
     }
 
     const columns = [
@@ -422,38 +416,11 @@ export const Manage = (props: Props) => {
             width: 200,
             align: 'center',
             render: (_: any, record: RoleListItem) => <Space>
-                {isEditing(record.Key)
-                    ? <>
-                        <Typography.Link onClick={() => save(record)} style={{marginRight: 8}}>
-                            Save
-                        </Typography.Link>
-                        <Popconfirm title="Sure to cancel?" onConfirm={() => setEditingKey(-1)}>
-                            Cancel
-                        </Popconfirm></>
-                    : <>
-                        <Button onClick={() => editRow(record)} style={{color: 'green'}}>编辑</Button>
-                        <Button onClick={() => reqRemoveRole(record.Id)} style={{color: 'red'}}> 删除</Button>
-                    </>
-                }
+                <Button onClick={() => edit(record)} style={{color: 'green'}}>编辑</Button>
+                <Button onClick={() => reqRemoveRole(record.Id)} style={{color: 'red'}}> 删除</Button>
             </Space>
         },
     ];
-
-    const mergedColumns = columns.map(col => {
-        if (!col.editable) {
-            return col;
-        }
-        return {
-            ...col,
-            onCell: (record: RoleListItem) => ({
-                record,
-                inputType: 'text',
-                dataIndex: col.dataIndex,
-                title: col.title,
-                editing: isEditing(record.Key),
-            }),
-        };
-    })
 
     return (
         <section className="table-outer">
@@ -478,15 +445,10 @@ export const Manage = (props: Props) => {
 
             <Form form={form} component={false}>
                 <Table
-                    columns={mergedColumns as ColumnsType<RoleListItem>}
+                    columns={columns as ColumnsType<RoleListItem>}
                     dataSource={list}
                     pagination={{pageSize: 6}}
                     bordered
-                    components={{
-                        body: {
-                            cell: EditableCell,
-                        }
-                    }}
                 />
             </Form>
 
@@ -526,37 +488,41 @@ export const Manage = (props: Props) => {
                     </Form.Item>
                 </Form>
             </Modal>
+
+            <Modal
+                centered
+                title={"修改信息_" + judgeRole ? "社区儿童主任" : "未成年人保护站站长"}
+                visible={editModalVisible}
+                onCancel={() => setEditModalVisible(false)}
+                onOk={save}
+            >
+                <Form form={form}>
+                    <Form.Item
+                        label={"姓名"}
+                        name={"Name"}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        label={"手机号"}
+                        name={"Phone"}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        label={"区县"}
+                        name={"District"}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        label={"街道"}
+                        name={"Street"}
+                    >
+                        <Input />
+                    </Form.Item>
+                </Form>
+            </Modal>
         </section>
     )
-}
-
-interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
-    editing: boolean;
-    dataIndex: string;
-    title: any;
-    inputType: 'text';
-    record: RoleListItem;
-    index: number;
-    children: React.ReactNode;
-}
-
-// 可编辑行下单元格
-const EditableCell: React.FC<EditableCellProps> = ({
-   editing,
-   dataIndex,
-   title,
-   inputType,
-   record,
-   index,
-   children,
-   ...restProps
-}) => {
-    return <td {...restProps}>
-        {editing ? (
-            <Form.Item
-                name={dataIndex}>
-                <Input />
-            </Form.Item>
-        ) : children}
-    </td>;
 }
