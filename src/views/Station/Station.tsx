@@ -12,7 +12,6 @@ export default function Station() {
     function updateList(){
 
         getStationList().then(res => {
-            console.log(res)
             const list :RoleListItem[] =( res as any).data.stationList;
             list.forEach(item => {
                 item.key = item.Key;

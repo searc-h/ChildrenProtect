@@ -215,7 +215,7 @@ const orgOptionsStation: Option[] = [
         ],
     },
 ];
-const orgOptionDirctore :Option[] = [
+const orgOptionDirector :Option[] = [
     {
         value: '渝中区',
         label: '渝中区',
@@ -359,7 +359,7 @@ export const Manage = (props: Props) => {
             align: 'center',
             render: (_ , record) => <Space>
                 <Button   style={{color: 'green'}}>编辑</Button>
-                <Button onClick={()=>{reqRemoveRole(record.Id)}} style={{color: 'red'}}> 删除</Button>
+                <Button onClick={()=>reqRemoveRole(record.Id)} style={{color: 'red'}}> 删除</Button>
             </Space>
         },
     ];
@@ -420,7 +420,7 @@ export const Manage = (props: Props) => {
                         name={"organization"}
                         rules={[{required: true}]}
                     >
-                        <Cascader options={judgeRole?orgOptionDirctore:orgOptionsStation} placeholder={"请选择"}/>
+                        <Cascader options={judgeRole?orgOptionDirector:orgOptionsStation} placeholder={"请选择"}/>
                     </Form.Item>
                     <Form.Item>
                         <Button htmlType={"submit"} type={"primary"}>Submit</Button>
