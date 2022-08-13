@@ -66,7 +66,7 @@ export default function Data() {
   // 获取数据概览
   useEffect(() => {
     showCardData().then(res => {
-      setData(res.data.data)
+      setData(res.data)
     }, err => {
       return message.error(err.response.data.message);
     })
@@ -83,7 +83,7 @@ export default function Data() {
         Doing: Array<ResData>,
         Finished: Array<ResData>,
       }
-      const {Doing, Finished} = res.data.data as Res;
+      const {Doing, Finished} = res.data as Res;
       const obj: map[] = [];
       Doing.forEach(item => {
         obj.push({

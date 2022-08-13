@@ -25,6 +25,13 @@ export const add = (person: Role, role: "station" | "director") => {
     return myAxios.post('/' + role + "/add", data)
 }
 
+// 移除 站长/儿童主任
+export const removeRole = (id:string, role: "station" | "director") => {
+    const data = new FormData();
+    data.append("id", id);
+    return myAxios.post('/' + role + "/remove", data)
+}
+
 // 显示儿童主任列表
 export const getDirectorList = () => {
     return myAxios("/director/list");

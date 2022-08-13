@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
-import {Button, Input, Space, Table, Modal, Form, Cascader, message} from "antd";
+import {Button, Input, Space, Table, Modal, Form, Cascader, message ,} from "antd";
 import {ColumnsType} from "antd/es/table";
 import './Manage.css'
 import {Role, RoleListItem} from "../../utils/interface";
-import {add} from "../../api/roleManageApi";
+import {add , removeRole} from "../../api/roleManageApi";
 
 interface Option {
     value: string | number;
@@ -13,6 +13,7 @@ interface Option {
 interface Props {
     list: RoleListItem[]
     judgeRole: boolean,  // true表站长管理, false表儿童主任管理
+    updateList: ()=>void // 重新刷新list
     searchFn: (keyWord: string) => void,
 }
 type FormVal = {
@@ -51,12 +52,20 @@ const columns: ColumnsType<RoleListItem> = [
         key: "op",
         width: 200,
         align: 'center',
-        render: () => <Space>
-            <Button style={{color: 'green'}}>编辑</Button>
-            <Button style={{color: 'red'}}> 删除</Button>
+        render: (_ , record) => <Space>
+            <Button   style={{color: 'green'}}>编辑</Button>
+            <Button onClick={()=>{reqRemoveRole(record.Id)}} style={{color: 'red'}}> 删除</Button>
         </Space>
     },
 ];
+
+// 移除站长或主任
+const reqRemoveRole = async (id:string)=>{
+
+    let result = await removeRole(id , sessionStorage.getItem('role') as 'station'| 'director')
+    console.log(result)
+
+}
 
 // 组织选项
 const orgOptions: Option[] = [
@@ -126,8 +135,8 @@ export const Manage = (props: Props) => {
     const [searchKeyword, setSearchKeyword] = useState<string>("");
     const [isModalVisible, setIsModalVisible] = useState(false);
 
-    const {judgeRole, list, searchFn} = props; // 站长/主任
-
+    const {judgeRole, list, searchFn,updateList} = props; // 站长/主任
+    sessionStorage.setItem('role', `${judgeRole ? "station" : "director"}`)
     function formFinished(data: FormVal) {
         const role: Role = {
             name: data.name,
@@ -138,9 +147,11 @@ export const Manage = (props: Props) => {
             street: data.organization[1],
         };
         add(role, judgeRole ? "station" : "director").then(res => {
-            return message.success(res.data.message);
+            // 成功之后更新列表
+            updateList()
+            return message.success((res as any).message);
         }, err => {
-            return message.error(err.response.data.message);
+            return message.error(err.message);
         })
     }
 
