@@ -7,8 +7,9 @@ import {getList} from "../../api/eventApi";
 
 interface DataType {
     key: React.Key,
+    Key?:String,
     Number: number,
-    Id: string, // 事件id
+    Id?: string, // 事件id
     Type: string,
     Phone: string,
     Detail: string,
@@ -32,19 +33,24 @@ export default function Event() {
     const columns: ColumnsType<DataType> = [
         {
             title: "序号",
-            dataIndex: "key",
+            dataIndex: "Key",
             key: "key",
             align:'center'
-        }, {
-            title: "事件Id",
-            dataIndex: "Id",
-            key: "id",
-            align: "center",
-        }, {
+        }, 
+        // {
+        //     title: "事件Id",
+        //     dataIndex: "Id",
+        //     key: "id",
+        //     align: "center",
+        // },
+         {
             title: "事件类型",
             dataIndex: "Type",
             key: "type",
-            align:'center'
+            align:'center',
+            render:()=>{
+                return <h1>非强制事件</h1>
+            }
         }, {
             title: "报告人手机号",
             dataIndex: "Phone",
@@ -120,9 +126,10 @@ export default function Event() {
     // 请求事件列表
     useEffect(() => {
         getList(1).then(res => {
-            const list: DataType[] = res.data.stationList;
+
+            const list: DataType[] = res.data.eventList;
             list.forEach(item => {
-                item.key = item.Number;
+                item.key = item.Id as React.Key; 
             })
             setData(list)
         }, err => {

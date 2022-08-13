@@ -381,13 +381,13 @@ export const Manage = (props: Props) => {
             key: "phone",
             editable: true,
         }, {
-            title: "省份",
+            title: "省市",
             width: 300,
             align: 'center',
             dataIndex: "Province",
             key: "province",
             editable: false,
-            render: () => <span>重庆</span>
+            render: () => <span>重庆市</span>
         }, {
             title: "城市",
             width: 300,
@@ -395,7 +395,7 @@ export const Manage = (props: Props) => {
             dataIndex: "City",
             key: "city",
             editable: false,
-            render: () => <span>重庆</span>
+            render: () => <span>重庆市</span>
         }, {
             title: "区县",
             width: 300,
