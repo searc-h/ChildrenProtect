@@ -1,5 +1,5 @@
 import {myAxios} from "./myAxios";
-import {Role} from "../utils/interface";
+import {Role, RoleListItem} from "../utils/interface";
 
 // 显示站长人员列表
 export const getStationList = () => {
@@ -46,4 +46,17 @@ export const searchDirector = (keyword: string) => {
     const data = new FormData();
     data.append("keyword", keyword);
     return myAxios.post("/director/search", data)
+}
+
+// 修改 站长/主任
+export const modifyInfo = (id: string, person: RoleListItem, role: "station" | "director") => {
+    const data = new FormData();
+    data.append("id", id);
+    data.append("name", person.Name);
+    data.append("phone", person.Phone);
+    data.append("province", "重庆市");
+    data.append("city", "重庆市");
+    data.append("district", person.District);
+    data.append("street", person.Street);
+    return myAxios.post('/' + role + "/modify", data)
 }
