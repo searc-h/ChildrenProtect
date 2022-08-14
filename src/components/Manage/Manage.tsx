@@ -5,6 +5,7 @@ import './Manage.css'
 import {Role, RoleListItem} from "../../utils/interface";
 import {add, modifyInfo, removeRole} from "../../api/roleManageApi";
 import getId from "../../utils/getId";
+import setId from '../../utils/setId'
 
 interface Option {
     value: string | number;
@@ -336,6 +337,8 @@ export const Manage = (props: Props) => {
 
     // 编辑选中行
     const edit = (record: RoleListItem) => {
+        // console.log(record)
+        setId(record.Id)
         setEditModalVisible(true);
         form.setFieldsValue({
             ...record
@@ -345,14 +348,15 @@ export const Manage = (props: Props) => {
     // 保存编辑
     const save = async () => {
         form.validateFields().then(val => {
+     
             const id = getId();
             if (!id) return message.warn("Id获取失败");
             modifyInfo(id, val, judgeRole ? "station" : "director")
             .then(res => {
-                console.log(res)
+                message.success((res as any).message)
                 updateList();
             }, err => {
-                return message.error(err.response.data.message);
+                return message.error(err.message);
             })
         })
         setEditModalVisible(false);
