@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import './GetBack.css'
+import './GetBack.less'
 import {getVerificationCode, verifyCode} from "../../api/loginApi";
 import {message} from "antd";
 

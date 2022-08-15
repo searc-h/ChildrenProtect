@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { RightOutlined } from '@ant-design/icons'
 import {Button, message} from 'antd'
-import './Detail.css'
+import './Detail.less'
 import {useRef, useEffect, useState} from 'react'
 import marker from '../../assets/icons/marker.png'
 import {getDetail} from "../../api/eventApi";

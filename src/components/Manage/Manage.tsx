@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {Button, Input, Space, Table, Modal, Form, Cascader, message, Typography, Popconfirm,} from "antd";
 import {ColumnsType} from "antd/es/table";
-import './Manage.css'
+import './Manage.less'
 import {Role, RoleListItem} from "../../utils/interface";
 import {add, modifyInfo, removeRole} from "../../api/roleManageApi";
 import getId from "../../utils/getId";
@@ -305,6 +305,7 @@ export const Manage = (props: Props) => {
 
     sessionStorage.setItem('role', `${judgeRole ? "station" : "director"}`)
 
+    // 提交
     function formFinished(data: FormVal) {
         const role: Role = {
             name: data.name,
@@ -361,6 +362,13 @@ export const Manage = (props: Props) => {
         })
         setEditModalVisible(false);
     }
+
+    // 重置搜索
+    const reSetSearch = ()=>{
+        setSearchKeyword("")
+        updateList()
+    }
+
 
     const columns = [
         {
@@ -438,13 +446,18 @@ export const Manage = (props: Props) => {
                         onChange={e => setSearchKeyword(e.target.value)}
                     />
                     <Button type='primary' onClick={() => searchFn(searchKeyword)}>搜索</Button>
-                    <Button type='dashed' onClick={() => updateList()}>重置</Button>
+                    <Button type='dashed' onClick={reSetSearch}>重置</Button>
                 </div>
                 <div className="right">
                     <Button type={"primary"} onClick={() => {
                         setIsModalVisible(true)
                     }}>新增{judgeRole ? "站长" : "主任"}</Button>
+
+                    <Button type={"primary"} onClick={() => {
+                        setIsModalVisible(true)
+                    }}>新增街道选项</Button>
                 </div>
+                
             </section>
 
             <Form form={form} component={false}>

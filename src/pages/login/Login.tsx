@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import setToken from '../../utils/setToken'
-import './Login.css'
+import './Login.less'
 import {login as loginApi} from "../../api/loginApi";
 import {message} from "antd";
 import setId from "../../utils/setId";

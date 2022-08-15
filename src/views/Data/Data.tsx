@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import './Data.css'
+import './Data.less'
 import finished from '../../assets/icons/finished.png'
 import doing from '../../assets/icons/doing.png'
 import {showCardData, showDataMap} from "../../api/dataApi";
@@ -134,8 +134,14 @@ export default function Data() {
 
     useEffect(() => {
       let map = new BMapGL.Map('mymap');
-      map.centerAndZoom(new BMapGL.Point(center.ing, center.lat), 16);
+      let centerPoint = new BMapGL.Point(center.ing, center.lat)
+      map.centerAndZoom(centerPoint, 16);
+      let marke = new BMapGL.Marker(centerPoint)
+      map.addOverlay(marke)
       map.enableScrollWheelZoom();
+
+      let zoomCtrl = new BMapGL.ZoomControl();  // 添加缩放控件
+      map.addControl(zoomCtrl);
 
       let finishedIcon = new BMapGL.Icon(finished, new BMapGL.Size(45, 50));
       let doingIcon = new BMapGL.Icon(doing, new BMapGL.Size(45, 54));

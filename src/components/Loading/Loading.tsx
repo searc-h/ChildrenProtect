@@ -1,9 +1,8 @@
-import React from 'react'
-import  './Loading.css'
+import  './Loading.less'
 export default function Loading() {
   return (
     <div className='loading'>
-      Loading
+        加载中...
     </div>
   )
 }

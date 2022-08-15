@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {Button, Form, Input, message, Modal} from "antd";
-import './Set.css'
+import './Set.less'
 import getId from "../../utils/getId";
 import {modifyPhone, modifyPwd, verificationCode} from "../../api/setApi";
 import getPhone from "../../utils/getPhone";

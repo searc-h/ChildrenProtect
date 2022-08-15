@@ -34,7 +34,11 @@ export default function Director() {
     useEffect(() => {
         if (keyword === "" || !keyword) return;
         searchDirector(keyword).then(res => {
-            setList(res.data.message.data.directorList);
+            let list:RoleListItem[] = res.data.directorList
+            list.forEach(item => {
+                item.key = item.Key;
+            })
+            setList(list);
         }, err => {
             return message.error(err.response.data.message);
         })

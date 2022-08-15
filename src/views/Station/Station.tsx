@@ -29,10 +29,15 @@ export default function Station() {
 
     // 搜索
     useEffect(() => {
-        if (keyword === "" || !keyword) return;
+        if (keyword.trim() === "" || !keyword) return;
         searchStation(keyword).then(res => {
-
-            setStationList((res as any).directorList);
+            
+            let list:RoleListItem[] = (res as any).message.data.directorList
+            list.forEach(item => {
+                item.key = item.Key;
+            })
+            
+            setStationList(list);
         }, err => {
             return message.error(err.message);
         })

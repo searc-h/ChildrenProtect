@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
 import avater from '../../assets/images/avatar.jpg'
 import msg from '../../assets/images/msg.png'
 import {DownOutlined} from '@ant-design/icons'
 import { Dropdown, Menu, Space } from 'antd';
-import './Header.css'
+import './Header.less'
 import { useNavigate } from 'react-router-dom';
 import removeToken from '../../utils/removeToken';
 export default function Header() {

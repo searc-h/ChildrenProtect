@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {useLocation, useNavigate} from 'react-router-dom'
-import './SetPassword.css'
+import './SetPassword.less'
 import {setPwd} from "../../api/loginApi";
 import {message} from "antd";
 export default function SetPassword() {
