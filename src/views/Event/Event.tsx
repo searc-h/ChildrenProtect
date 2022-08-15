@@ -12,15 +12,16 @@ interface DataType {
     Id?: string, // 事件id
     Type: string,
     Phone: string,
-    Detail: string,
-    ImgUrl: string,
+    Describes: string,
+    Image: string,
     VidUrl: string,
     Status: string
 }
 interface ModalContent {
     visible: boolean,
     title: string,
-    content: string,
+    content?: string,
+    image?:string[]
 }
 
 const stateMap = {
@@ -37,12 +38,6 @@ export default function Event() {
             key: "key",
             align:'center'
         }, 
-        // {
-        //     title: "事件Id",
-        //     dataIndex: "Id",
-        //     key: "id",
-        //     align: "center",
-        // },
          {
             title: "事件类型",
             dataIndex: "Type",
@@ -63,7 +58,7 @@ export default function Event() {
             align:'center',
             render: (text, record) => <Button
                 type={"link"}
-                onClick={() => showModal("事件描述", record.Detail)}>查看内容</Button>,
+                onClick={() => showModal({title:"事件描述",content:record.Describes ,image:[],visible:true})}>查看内容</Button>,
         }, {
             title: "事件图片",
             dataIndex: "ImgUrl",
@@ -71,7 +66,7 @@ export default function Event() {
             align:'center',
             render: (text, record) => <Button
                 type={"link"}
-                onClick={() => showModal("查看图片", record.VidUrl)}>查看图片</Button>,
+                onClick={() => showModal({title:"查看图片",content:"" , image:record.Image.split(",")||[],visible:true})}>查看图片</Button>,
         }, {
             title: "事件视频",
             dataIndex: "video",
@@ -79,7 +74,7 @@ export default function Event() {
             align:'center',
             render: (text, record) => <Button
                 type={"link"}
-                onClick={() => showModal("查看视频", record.VidUrl)}>查看视频</Button>,
+                onClick={() => showModal({title:"查看视频",content:"没有视频",visible:true , image:[]})}>查看视频</Button>,
         }, {
             title: "处理状态",
             dataIndex: "Status",
@@ -104,16 +99,19 @@ export default function Event() {
     ];
 
     const [data, setData] = useState<DataType[]>([]);
+
     const [modalContent, setModalContent] = useState<ModalContent>({
         visible: false,
         title: "",
         content: "",
+        image:[""]
     });
 
-    const showModal = (title: string, content?: string) => {
+    const showModal = (model:ModalContent) => {
         setModalContent({
-            content: content || "暂无内容",
-            title: title || "查看",
+            image:model.image,
+            content: model.content,
+            title: model.title || "查看",
             visible: true,
         })
     }
@@ -137,6 +135,24 @@ export default function Event() {
         })
     }, [])
 
+    function resolveModal(){
+        if((modalContent.image as string[])?.length>0){
+            if((modalContent.image as string[])[0].length>2)
+                return <p style={{"overflowY":"scroll" , width:"100%"}}>{
+                        modalContent.image?.map((img)=>{
+                            return <img style={{width:"300px"}} key={img} src={"http://"+img}/>
+                        })
+                    }</p>
+            else{
+                return <p>没有图片</p>
+            }
+        }
+        else{
+            return <p>{modalContent.content}</p>
+        }
+        
+    }
+
     return (
         <>
             <Table columns={columns} dataSource={data}/>
@@ -147,7 +163,9 @@ export default function Event() {
                 onOk={handle}
                 onCancel={handle}
             >
-                <p>{modalContent.content}</p>
+               {
+                    resolveModal()
+               }
             </Modal>
         </>
     )

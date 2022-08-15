@@ -47,7 +47,7 @@ export default function Data() {
   // 卡片显示内容
   const cardList:cardProps[] = [
     {
-      title: '强制报告事件总数',
+      title: '非强制报告事件总数',
       count: data.EventTotal,
       img: ''
     },
@@ -68,7 +68,7 @@ export default function Data() {
     showCardData().then(res => {
       setData(res.data)
     }, err => {
-      return message.error(err.response.data.message);
+      return message.error(err.message);
     })
   }, [])
 
@@ -99,28 +99,26 @@ export default function Data() {
           status: "finished",
         })
       })
-      obj.push(
-            {
-              longitude:  29.7302,  //经度
-              latitude:  150, // 纬度
-              status: "finished"
-            },
-      )
+      
       setMapList(obj);
     }, err => {
-      return message.error(err.response.data.message);
+      return message.error(err.message);
     })
   }, [])
 
   function MyMap(props: mapProps) {
     let {mapList} = props
+    
+
     interface Coordinate {  // 坐标
       ing: number,
       lat: number,
+      status:string
     }
     const [center, setCenter] = useState<Coordinate>({
       ing: 106.5507,
       lat: 29.57320,
+      status:"doing"
     }); // 地图中心点
 
     useEffect(() => { // 已返回任一点为中心点
@@ -128,16 +126,18 @@ export default function Data() {
         setCenter({
           ing: mapList[0].longitude,
           lat: mapList[0].latitude,
+          status:mapList[0].status
         })
       }
     }, [mapList])
 
     useEffect(() => {
+
+      console.log(center)
+
       let map = new BMapGL.Map('mymap');
       let centerPoint = new BMapGL.Point(center.ing, center.lat)
       map.centerAndZoom(centerPoint, 16);
-      let marke = new BMapGL.Marker(centerPoint)
-      map.addOverlay(marke)
       map.enableScrollWheelZoom();
 
       let zoomCtrl = new BMapGL.ZoomControl();  // 添加缩放控件
@@ -147,17 +147,18 @@ export default function Data() {
       let doingIcon = new BMapGL.Icon(doing, new BMapGL.Size(45, 54));
 
       mapList.forEach((marker)=>{
+        console.log(marker)
         let {longitude  , latitude} = marker
         let Pointer :any
-        if(marker.status === 'finished')
+        if(marker.status == 'finished')
         {
           // 创建点标记
-          Pointer = new BMapGL.Marker(new BMapGL.Point(+latitude ,+longitude ) ,{
+          Pointer = new BMapGL.Marker(new BMapGL.Point(+longitude,+latitude ) ,{
             icon: finishedIcon
           })
         }else{
           // 创建点标记
-          Pointer = new BMapGL.Marker(new BMapGL.Point(+latitude ,+longitude ) ,{
+          Pointer = new BMapGL.Marker(new BMapGL.Point(+longitude ,+latitude ) ,{
             icon: doingIcon
           })
         }
@@ -165,7 +166,7 @@ export default function Data() {
         map.addOverlay(Pointer)
       })
 
-    }, [center.ing, center.lat, mapList])
+    }, [center, mapList])
 
     return (
         <div id='mymap' style={{ "width": "100%", "height": "100%", "textAlign": "center", "backgroundColor": "#f3f3f3", "boxShadow": "0px 0px 10px rgba(0,0,0,0.2)" , zIndex:"99" }}>
