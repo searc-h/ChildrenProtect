@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import './GetBack.css'
+import './GetBack.less'
 import {getVerificationCode, verifyCode} from "../../api/loginApi";
 import {message} from "antd";
+
+const phoneReg = /^1(3[0-9]|4[01456879]|5[0-35-9]|6[2567]|7[0-8]|8[0-9]|9[0-35-9])\d{8}$/
 
 export default function GetBack() {
   let [isRight, setIsRight] = useState<boolean>(true)
@@ -12,10 +14,10 @@ export default function GetBack() {
   let next = () => {
 
     // 做手机号验证
-    if(!phone.trim()){
-      alert('手机号不能为空')
-      return
+    if(!phoneReg.test(phone)){
+      return message.error("手机号填写错误");
     }
+    else
     // 下一步
     verifyCode(phone, code).then(res => {
       setIsRight(true)
@@ -28,20 +30,26 @@ export default function GetBack() {
         })
 
       }, 0);
-      return message.success(res.data.message);
+      return message.success((res as any).message);
     }, err => {
       setIsRight(false)
-      return message.error(err.response.data.message);
+      return message.error(err.message);
     })
   }
 
   // 发送验证码
   let getCode = ()=>{
+
+    // 做手机号验证
+    if(!phoneReg.test(phone)){
+      return message.error("手机号填写错误");
+    }else
+
     getVerificationCode(phone).then(res => {
-      return message.success(res.data.message);
-    }, err => {
-      return message.error(err.response.data.message);
-    })
+        return message.success((res as any).message);
+      }, err => {
+        return message.error(err.message);
+      })
   }
 
   return (

@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {Button, Form, Input, message, Modal} from "antd";
-import './Set.css'
+import './Set.less'
 import getId from "../../utils/getId";
 import {modifyPhone, modifyPwd, verificationCode} from "../../api/setApi";
 import getPhone from "../../utils/getPhone";
@@ -21,11 +21,17 @@ export default function Set (){
     const getCode = (phone: string) => {
         const id = getId();
         if (!id) return message.error("缺少Id字段");
-        verificationCode(id, phone).then(res => {
-            return message.success(res.data.message);
-        }, err => {
-            return message.error(err.response.data.message);
-        })
+        let phoneReg = /^1(3[0-9]|4[01456879]|5[0-35-9]|6[2567]|7[0-8]|8[0-9]|9[0-35-9])\d{8}$/
+        if(phone && phoneReg.test(phone) ){
+            
+            verificationCode(id, phone).then(res => {
+                return message.success((res as any).message);
+            }, err => {
+                return message.error(err.message);
+            })
+        }else{
+            return message.error("手机号填写有误");
+        }
     }
     function handleForm(flag: boolean) {    // true表单1，false表单2
         const id = getId();
@@ -37,9 +43,9 @@ export default function Set (){
                     if (!val.code) return message.warn("请填写验证码");
                     modifyPhone(id, val.newPhone, val.code)
                         .then(res => {
-                            return message.success(res.data.message);
+                            return message.success((res as any).message);
                         }, err => {
-                            return message.error(err.response.data.message);
+                            return message.error(err.message);
                         })
                     form1.resetFields();
                 }, info => {
@@ -51,9 +57,9 @@ export default function Set (){
                     const {oldPassword, newPassword} = val;
                     if (!oldPassword || !newPassword) return message.error("请填写完整");
                     modifyPwd(id, oldPassword, newPassword).then(res => {
-                        return message.success(res.data.message);
+                        return message.success((res as any).message);
                     }, err => {
-                        return message.error(err.response.data.message);
+                        return message.error(err.message);
                     })
                     form1.resetFields();
                 }, info => {

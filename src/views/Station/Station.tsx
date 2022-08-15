@@ -8,27 +8,38 @@ export default function Station() {
     const [stationList, setStationList] = useState<RoleListItem[]>([]);
     const [keyword, setKeyword] = useState<string>("");
 
-    // 请求站长人员列表
-    useEffect(() => {
+    // 更新列表
+    function updateList(){
+
         getStationList().then(res => {
-            const list :RoleListItem[] = res.data.data.stationList;
+            const list :RoleListItem[] =( res as any).data.stationList;
             list.forEach(item => {
                 item.key = item.Key;
             })
             setStationList(list);
         }, err => {
-            return message.error(err.response.data.message);
+            return message.error(err.message);
         });
+    }
+
+    // 请求站长人员列表
+    useEffect(() => {
+        updateList()
     }, [])
 
     // 搜索
     useEffect(() => {
-        if (keyword === "" || !keyword) return;
+        if (keyword.trim() === "" || !keyword) return;
         searchStation(keyword).then(res => {
-            console.log(res)
-            setStationList(res.data.message.data.directorList);
+            
+            let list:RoleListItem[] = (res as any).message.data.directorList
+            list.forEach(item => {
+                item.key = item.Key;
+            })
+            
+            setStationList(list);
         }, err => {
-            return message.error(err.response.data.message);
+            return message.error(err.message);
         })
     }, [keyword])
 
@@ -37,5 +48,5 @@ export default function Station() {
         setKeyword(keyWord);
     }
 
-    return <Manage judgeRole={true} list={stationList} searchFn={search} />
+    return <Manage judgeRole={true}  updateList={updateList} list={stationList} searchFn={search} />
 }

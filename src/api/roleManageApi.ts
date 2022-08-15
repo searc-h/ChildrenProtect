@@ -1,5 +1,5 @@
 import {myAxios} from "./myAxios";
-import {Role} from "../utils/interface";
+import {Role, RoleListItem} from "../utils/interface";
 
 // 显示站长人员列表
 export const getStationList = () => {
@@ -22,7 +22,18 @@ export const add = (person: Role, role: "station" | "director") => {
     data.append("city", person.city);
     data.append("district", person.district);
     data.append("street", person.street);
+    // 如果有社区
+    if(person.community){
+        data.append("community", person.community);
+    }
     return myAxios.post('/' + role + "/add", data)
+}
+
+// 移除 站长/儿童主任
+export const removeRole = (id:string, role: "station" | "director") => {
+    const data = new FormData();
+    data.append("id", id);
+    return myAxios.post('/' + role + "/remove", data)
 }
 
 // 显示儿童主任列表
@@ -35,4 +46,19 @@ export const searchDirector = (keyword: string) => {
     const data = new FormData();
     data.append("keyword", keyword);
     return myAxios.post("/director/search", data)
+}
+
+// 修改 站长/主任
+export const modifyInfo = (id: string, person: RoleListItem, role: "station" | "director") => {
+    const data = new FormData();
+    data.append("id", id);
+    data.append("name", person.Name);
+    data.append("phone", person.Phone);
+    data.append("province", "重庆市");
+    data.append("city", "重庆市");
+    data.append("district", person.District);
+    data.append("street", person.Street);
+    if (role === "director")
+        data.append("community", `重庆市${person.District + person.Street}`)
+    return myAxios.post('/' + role + "/modify", data)
 }

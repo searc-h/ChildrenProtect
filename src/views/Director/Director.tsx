@@ -12,10 +12,29 @@ export default function Director() {
         setKeyword(keyWord);
     }
 
+    // 更新列表
+    function updateList(){
+        getDirectorList().then(res => {
+            const list :RoleListItem[] = res.data.directorList;
+            list.forEach(item => {
+                item.key = item.Key;
+            })
+            setList(list);
+        }, err => {
+            return message.error(err.response.message);
+        })
+    }
+
     // 请求列表
     useEffect(() => {
-        getDirectorList().then(res => {
-            const list :RoleListItem[] = res.data.data.stationList;
+        updateList()
+    }, [])
+
+    // 检索
+    useEffect(() => {
+        if (keyword === "" || !keyword) return;
+        searchDirector(keyword).then(res => {
+            let list:RoleListItem[] = res.data.directorList
             list.forEach(item => {
                 item.key = item.Key;
             })
@@ -23,17 +42,7 @@ export default function Director() {
         }, err => {
             return message.error(err.response.data.message);
         })
-    }, [])
-
-    // 检索
-    useEffect(() => {
-        if (keyword === "" || !keyword) return;
-        searchDirector(keyword).then(res => {
-            setList(res.data.message.data.directorList);
-        }, err => {
-            return message.error(err.response.data.message);
-        })
     }, [keyword])
 
-    return <Manage judgeRole={false} list={list} searchFn={search}/>
+    return <Manage judgeRole={false} list={list} updateList={updateList} searchFn={search}/>
 }

@@ -1,7 +1,7 @@
 import {Menu} from "antd";
 import {ReactNode} from "react";
-import './MainLayout.css'
-import {Link, useLocation ,Outlet} from "react-router-dom";
+import './MainLayout.less'
+import {Link, useLocation } from "react-router-dom";
 import {Header} from '../components/index'
 interface Props {
     children: ReactNode,
