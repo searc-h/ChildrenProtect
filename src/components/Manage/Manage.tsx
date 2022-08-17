@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Button, Input, Space, Table, Modal, Form, Cascader, message,} from "antd";
 import {ColumnsType} from "antd/es/table";
 import './Manage.less'
 import {Role, RoleListItem} from "../../utils/interface";
-import {add, modifyInfo, removeRole} from "../../api/roleManageApi";
+import {add, getDistinct, modifyInfo, removeRole} from "../../api/roleManageApi";
 import getId from "../../utils/getId";
 import setId from '../../utils/setId'
 
@@ -17,6 +17,11 @@ interface Props {
     judgeRole: boolean,  // true表站长管理, false表儿童主任管理
     updateList: () => void // 重新刷新list
     searchFn: (keyWord: string) => void,
+}
+interface Districts {
+    Name: string,
+    Level: "province" | "city" | "district" | "street",
+    Districts: Districts[] | [],
 }
 
 type FormVal = {
@@ -299,6 +304,8 @@ export const Manage = (props: Props) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editModalVisible, setEditModalVisible] = useState(false);
     const [isStreetModalVisible, setIsStreetModalVisible] = useState<boolean>(false);
+    const [districts, setDistricts] = useState<Districts>(); // 地区
+    const [stationDistrictOption, setStationDistrictOption] = useState<Option>();   // 地区选项
 
     const [form] = Form.useForm();
 
@@ -376,6 +383,27 @@ export const Manage = (props: Props) => {
         updateList()
     }
 
+    // 获取地区选项
+    useEffect(() => {
+        getDistinct().then(res => {
+            setDistricts(res.data.Districts);
+        }, err => {
+            console.log(err)
+            // return message.error(err.message);
+        })
+    }, [])
+    // 处理地区级联选项
+    useEffect(() => {
+        if (!districts) return;
+        const getOption = (distinct: Districts): Option => {
+            return {
+                value: distinct.Name,
+                label: distinct.Name,
+                children: distinct.Districts.map(item => getOption(item)),
+            }
+        }
+        setStationDistrictOption(getOption(districts));
+    }, [districts])
 
     const columns = [
         {

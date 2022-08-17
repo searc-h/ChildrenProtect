@@ -62,3 +62,8 @@ export const modifyInfo = (id: string, person: RoleListItem, role: "station" | "
         data.append("community", `重庆市${person.District + person.Street}`)
     return myAxios.post('/' + role + "/modify", data)
 }
+
+// 获取地区
+export const getDistinct = () => {
+    return myAxios.get("/area/getBasic");
+}
