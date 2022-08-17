@@ -25,7 +25,7 @@ export default function SetPassword() {
       navigate('/login', {replace:true})  // 跳转到登录页重新登录以获取token
       return message.success(res.data.message);
     }, err => {
-      return message.error(err.response.data.message);
+      return message.error(err.message);
     })
   }
 

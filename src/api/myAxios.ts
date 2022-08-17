@@ -22,13 +22,7 @@ myAxios.interceptors.request.use((config) => {
 myAxios.interceptors.response.use(
 	(response) => {
 		// 对响应数据做点什么
-		const res = response.data
-
-        if(res.code === 200)
-            return response.data
-        else {
-            alert('网络繁忙')
-        }
+        return response.data;
 	},
 
 

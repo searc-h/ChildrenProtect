@@ -131,7 +131,7 @@ export default function Event() {
             })
             setData(list)
         }, err => {
-            return message.error(err.response.message);
+            return message.error(err.message);
         })
     }, [])
 
