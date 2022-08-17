@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {Button, Input, Space, Table, Modal, Form, Cascader, message, Typography, Popconfirm,} from "antd";
+import {Button, Input, Space, Table, Modal, Form, Cascader, message,} from "antd";
 import {ColumnsType} from "antd/es/table";
 import './Manage.less'
 import {Role, RoleListItem} from "../../utils/interface";
@@ -298,6 +298,7 @@ export const Manage = (props: Props) => {
     const [searchKeyword, setSearchKeyword] = useState<string>("");
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editModalVisible, setEditModalVisible] = useState(false);
+    const [isStreetModalVisible, setIsStreetModalVisible] = useState<boolean>(false);
 
     const [form] = Form.useForm();
 
@@ -329,11 +330,17 @@ export const Manage = (props: Props) => {
 
     // 移除站长或主任
     const reqRemoveRole = async (id: string) => {
-
-        let result = await removeRole(id, sessionStorage.getItem('role') as 'station' | 'director')
-        // 成功之后更新列表
-        updateList()
-
+        type Response = {
+            code: number,
+            message: string
+        };
+        let result = (await removeRole(id, sessionStorage.getItem('role') as 'station' | 'director')) as unknown as Response ;
+        if (result.code === 200) {
+            updateList();   // 成功之后更新列表
+            return message.success(result.message);
+        } else {
+            return message.error(result.message);
+        }
     }
 
     // 编辑选中行
@@ -453,9 +460,10 @@ export const Manage = (props: Props) => {
                         setIsModalVisible(true)
                     }}>新增{judgeRole ? "站长" : "主任"}</Button>
 
-                    <Button type={"primary"} onClick={() => {
-                        setIsModalVisible(true)
-                    }}>新增街道选项</Button>
+                    {!judgeRole && <Button
+                        type={"primary"}
+                        onClick={() => {setIsModalVisible(true)}}
+                    >新增街道选项</Button>}
                 </div>
                 
             </section>
@@ -539,6 +547,12 @@ export const Manage = (props: Props) => {
                         <Input />
                     </Form.Item>
                 </Form>
+            </Modal>
+
+            <Modal title={"新增街道选项"} visible={isStreetModalVisible}
+                onCancel={() => setIsStreetModalVisible(false)}
+            >
+
             </Modal>
         </section>
     )
