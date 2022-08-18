@@ -30,282 +30,13 @@ type FormVal = {
     organization: [string, string, string],
 }   // 表格数据
 
-// 组织选项
-const orgOptionsStation: Option[] = [
-    {
-        value: '渝中区',
-        label: '渝中区',
-        children: [
-            {
-                value: '七星岗街道',
-                label: '七星岗街道',
-                children: [
-                    {
-                        value: "第一社区",
-                        label: "第一社区",
-                    },
-                    {
-                        value: "第二社区",
-                        label: "第二社区",
-                    },
-                ]
-            }, {
-                value: "解放碑街道",
-                label: "解放碑街道",
-                children: [
-                    {
-                        value: "第一社区",
-                        label: "第一社区",
-                    },
-                    {
-                        value: "第二社区",
-                        label: "第二社区",
-                    },
-                ]
-            }, {
-                value: "两路口街道",
-                label: "两路口街道",
-                children: [
-                    {
-                        value: "第一社区",
-                        label: "第一社区",
-                    },
-                    {
-                        value: "第二社区",
-                        label: "第二社区",
-                    },
-                ]
-            }
-        ],
-    },
-    {
-        value: '南岸区',
-        label: '南岸区',
-        children: [
-            {
-                value: '南坪街道',
-                label: '南坪街道',
-                children: [
-                    {
-                        value: "第一社区",
-                        label: "第一社区",
-                    },
-                    {
-                        value: "第二社区",
-                        label: "第二社区",
-                    },
-                ]
-            }, {
-                value: '弹子石街道',
-                label: '弹子石街道',
-                children: [
-                    {
-                        value: "第一社区",
-                        label: "第一社区",
-                    },
-                    {
-                        value: "第二社区",
-                        label: "第二社区",
-                    },
-                ]
-            }, {
-                value: '海棠溪街道',
-                label: '海棠溪街道',
-                children: [
-                    {
-                        value: "第一社区",
-                        label: "第一社区",
-                    },
-                    {
-                        value: "第二社区",
-                        label: "第二社区",
-                    },
-                ]
-            }, {
-                value: '花园路街道',
-                label: '花园路街道',
-                children: [
-                    {
-                        value: "第一社区",
-                        label: "第一社区",
-                    },
-                    {
-                        value: "第二社区",
-                        label: "第二社区",
-                    },
-                ]
-            }, {
-                value: '铜元局街道',
-                label: '铜元局街道',
-                children: [
-                    {
-                        value: "第一社区",
-                        label: "第一社区",
-                    },
-                    {
-                        value: "第二社区",
-                        label: "第二社区",
-                    },
-                ]
-            }, {
-                value: '龙门浩街道',
-                label: '龙门浩街道',
-                children: [
-                    {
-                        value: "第一社区",
-                        label: "第一社区",
-                    },
-                    {
-                        value: "第二社区",
-                        label: "第二社区",
-                    },
-                ]
-            }
-        ],
-    },
-    {
-        value: '渝北区',
-        label: '渝北区',
-        children: [
-            {
-                value: '两路街道',
-                label: '两路街道',
-                children: [
-                    {
-                        value: "第一社区",
-                        label: "第一社区",
-                    },
-                    {
-                        value: "第二社区",
-                        label: "第二社区",
-                    },
-                ]
-            }, {
-                value: "人和街道",
-                label: "人和街道",
-                children: [
-                    {
-                        value: "第一社区",
-                        label: "第一社区",
-                    },
-                    {
-                        value: "第二社区",
-                        label: "第二社区",
-                    },
-                ]
-            }, {
-                value: "仙桃街道",
-                label: "仙桃街道",
-                children: [
-                    {
-                        value: "第一社区",
-                        label: "第一社区",
-                    },
-                    {
-                        value: "第二社区",
-                        label: "第二社区",
-                    },
-                ]
-            }, {
-                value: "双凤街街道",
-                label: "双凤街街道",
-                children: [
-                    {
-                        value: "第一社区",
-                        label: "第一社区",
-                    },
-                    {
-                        value: "第二社区",
-                        label: "第二社区",
-                    },
-                ]
-            },
-        ],
-    },
-];
-const orgOptionDirector: Option[] = [
-    {
-        value: '渝中区',
-        label: '渝中区',
-        children: [
-            {
-                value: '七星岗街道',
-                label: '七星岗街道',
-
-            }, {
-                value: "解放碑街道",
-                label: "解放碑街道",
-
-            }, {
-                value: "两路口街道",
-                label: "两路口街道",
-
-            }
-        ],
-    },
-    {
-        value: '南岸区',
-        label: '南岸区',
-        children: [
-            {
-                value: '南坪街道',
-                label: '南坪街道',
-
-            }, {
-                value: '弹子石街道',
-                label: '弹子石街道',
-
-            }, {
-                value: '海棠溪街道',
-                label: '海棠溪街道',
-
-            }, {
-                value: '花园路街道',
-                label: '花园路街道',
-
-            }, {
-                value: '铜元局街道',
-                label: '铜元局街道',
-
-            }, {
-                value: '龙门浩街道',
-                label: '龙门浩街道',
-
-            }
-        ],
-    },
-    {
-        value: '渝北区',
-        label: '渝北区',
-        children: [
-            {
-                value: '两路街道',
-                label: '两路街道',
-
-            }, {
-                value: "人和街道",
-                label: "人和街道",
-
-            }, {
-                value: "仙桃街道",
-                label: "仙桃街道",
-
-            }, {
-                value: "双凤街街道",
-                label: "双凤街街道",
-
-            },
-        ],
-    },
-];
-
 export const Manage = (props: Props) => {
     const [searchKeyword, setSearchKeyword] = useState<string>("");
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editModalVisible, setEditModalVisible] = useState(false);
     const [isStreetModalVisible, setIsStreetModalVisible] = useState<boolean>(false);
     const [districts, setDistricts] = useState<Districts>(); // 地区
-    const [stationDistrictOption, setStationDistrictOption] = useState<Option>();   // 地区选项
+    const [districtOption, setDistrictOption] = useState<Option>();   // 地区选项
 
     const [form] = Form.useForm();
 
@@ -386,7 +117,7 @@ export const Manage = (props: Props) => {
     // 获取地区选项
     useEffect(() => {
         getDistinct().then(res => {
-            setDistricts(res.data.Districts);
+            setDistricts(res.data);
         }, err => {
             console.log(err)
             // return message.error(err.message);
@@ -399,10 +130,10 @@ export const Manage = (props: Props) => {
             return {
                 value: distinct.Name,
                 label: distinct.Name,
-                children: distinct.Districts.map(item => getOption(item)),
-            }
+                children: distinct.Districts?.map(item => getOption(item)),
+            };
         }
-        setStationDistrictOption(getOption(districts));
+        setDistrictOption(getOption(districts));
     }, [districts])
 
     const columns = [
@@ -534,7 +265,7 @@ export const Manage = (props: Props) => {
                         name={"organization"}
                         rules={[{required: true}]}
                     >
-                        <Cascader options={judgeRole ? orgOptionDirector : orgOptionsStation} placeholder={"请选择"}/>
+                        {districtOption && <Cascader options={[districtOption]} placeholder={"请选择"}/>}
                     </Form.Item>
                     <Form.Item>
                         <Button htmlType={"submit"} type={"primary"}>Submit</Button>
