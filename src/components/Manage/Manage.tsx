@@ -3,14 +3,16 @@ import {Button, Input, Space, Table, Modal, Form, Cascader, message,} from "antd
 import {ColumnsType} from "antd/es/table";
 import './Manage.less'
 import {Role, RoleListItem} from "../../utils/interface";
-import {add, getDistinct, modifyInfo, removeRole} from "../../api/roleManageApi";
+import {add, getCommunity, getDistinct, modifyInfo, removeRole} from "../../api/roleManageApi";
 import getId from "../../utils/getId";
 import setId from '../../utils/setId'
 
 interface Option {
-    value: string | number;
+    value: string;
     label: string;
     children?: Option[];
+    isLeaf?: boolean,
+    loading?: boolean,
 }   // 级联选项
 interface Props {
     list: RoleListItem[]
@@ -36,7 +38,7 @@ export const Manage = (props: Props) => {
     const [editModalVisible, setEditModalVisible] = useState(false);
     const [isStreetModalVisible, setIsStreetModalVisible] = useState<boolean>(false);
     const [districts, setDistricts] = useState<Districts>(); // 地区
-    const [districtOption, setDistrictOption] = useState<Option>();   // 地区选项
+    const [districtOption, setDistrictOption] = useState<Option>({value: '', label: '', loading: true});   // 地区选项
 
     const [form] = Form.useForm();
 
@@ -131,10 +133,30 @@ export const Manage = (props: Props) => {
                 value: distinct.Name,
                 label: distinct.Name,
                 children: distinct.Districts?.map(item => getOption(item)),
+                isLeaf: false,
+                loading: false,
             };
         }
         setDistrictOption(getOption(districts));
     }, [districts])
+
+    // 地区选项动态加载
+    const loadCommunity = (selectedOption: Option[]) => {
+        if (judgeRole || selectedOption.length < 4) return;  // 站长、街道以前不需动态加载
+        const targetOption = selectedOption[selectedOption.length - 1];
+        targetOption.loading = true;
+        const options: string[] = new Array(4);
+        for (let i = 0; i < 4; i++) {
+            options[i] = selectedOption[i].value;
+        }
+        getCommunity(options[0], options[1], options[2], options[3]).then(res => {
+            console.log(res.data)
+            targetOption.loading = false;
+            targetOption.children = res.data;
+            setDistrictOption(districtOption)
+        })
+        targetOption.loading = false;
+    }
 
     const columns = [
         {
@@ -265,7 +287,9 @@ export const Manage = (props: Props) => {
                         name={"organization"}
                         rules={[{required: true}]}
                     >
-                        {districtOption && <Cascader options={[districtOption]} placeholder={"请选择"}/>}
+                        <Cascader options={[districtOption]} placeholder={"请选择"}
+                            // @ts-ignore
+                            loadData={loadCommunity} changeOnSelect />
                     </Form.Item>
                     <Form.Item>
                         <Button htmlType={"submit"} type={"primary"}>Submit</Button>

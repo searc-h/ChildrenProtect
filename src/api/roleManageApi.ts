@@ -67,3 +67,13 @@ export const modifyInfo = (id: string, person: RoleListItem, role: "station" | "
 export const getDistinct = () => {
     return myAxios.get("/area/getBasic");
 }
+
+// 获取社区
+export const getCommunity = (province: string, city: string, district: string, street: string) => {
+    const data = new FormData();
+    data.append("province", province);
+    data.append("city", city);
+    data.append("district", district);
+    data.append("street", street);
+    return myAxios("/area/getCommunity", {data});
+}
