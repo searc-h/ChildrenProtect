@@ -3,7 +3,7 @@ import {Button, Input, Space, Table, Modal, Form, Cascader, message,} from "antd
 import {ColumnsType} from "antd/es/table";
 import './Manage.less'
 import {Role, RoleListItem} from "../../utils/interface";
-import {add, getCommunity, getDistinct, modifyInfo, removeRole} from "../../api/roleManageApi";
+import {add, addCommunity, getCommunity, getDistinct, modifyInfo, removeRole} from "../../api/roleManageApi";
 import getId from "../../utils/getId";
 import setId from '../../utils/setId'
 
@@ -121,8 +121,7 @@ export const Manage = (props: Props) => {
         getDistinct().then(res => {
             setDistricts(res.data);
         }, err => {
-            console.log(err)
-            // return message.error(err.message);
+            return message.error(err.message);
         })
     }, [])
     // 处理地区级联选项
@@ -142,7 +141,7 @@ export const Manage = (props: Props) => {
 
     // 地区选项动态加载
     const loadCommunity = (selectedOption: Option[]) => {
-        if (judgeRole || selectedOption.length < 4) return;  // 站长、街道以前不需动态加载
+        if (judgeRole || selectedOption.length < 4) return;  // 街道以前不需动态加载
         const targetOption = selectedOption[selectedOption.length - 1];
         targetOption.loading = true;
         const options: string[] = new Array(4);
@@ -156,6 +155,15 @@ export const Manage = (props: Props) => {
             setDistrictOption(districtOption)
         })
         targetOption.loading = false;
+    }
+
+    // 添加社区
+    const finishCommunityForm = (values: {organization: string[], community: string}) => {
+        addCommunity(values.organization, values.community).then(res => {
+            console.log(res.data)
+        }, err => {
+            return message.error(err.message);
+        })
     }
 
     const columns = [
@@ -243,7 +251,7 @@ export const Manage = (props: Props) => {
 
                     {!judgeRole && <Button
                         type={"primary"}
-                        onClick={() => {setIsModalVisible(true)}}
+                        onClick={() => {setIsStreetModalVisible(true)}}
                     >新增街道选项</Button>}
                 </div>
                 
@@ -335,7 +343,17 @@ export const Manage = (props: Props) => {
             <Modal title={"新增街道选项"} visible={isStreetModalVisible}
                 onCancel={() => setIsStreetModalVisible(false)}
             >
-
+                <Form onFinish={finishCommunityForm}>
+                    <Form.Item label={"区域"} name={"organization"}>
+                        <Cascader options={[districtOption]} placeholder={"请选择"} changeOnSelect />
+                    </Form.Item>
+                    <Form.Item label={"社区"} name={"community"}>
+                        <Input />
+                    </Form.Item>
+                    <Form.Item>
+                        <Button type={"primary"} htmlType={"submit"}>Submit</Button>
+                    </Form.Item>
+                </Form>
             </Modal>
         </section>
     )

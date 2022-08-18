@@ -77,3 +77,14 @@ export const getCommunity = (province: string, city: string, district: string, s
     data.append("street", street);
     return myAxios("/area/getCommunity", {data});
 }
+
+// 添加社区
+export const addCommunity = (organization: string[], community: string) => {
+    const data = new FormData();
+    data.append("province", organization[0]);
+    data.append("city", organization[1]);
+    data.append("district", organization[2]);
+    data.append("street", organization[3]);
+    data.append("community", community);
+    return myAxios("/area/addCommunity", {data});
+}
