@@ -149,12 +149,11 @@ export const Manage = (props: Props) => {
             options[i] = selectedOption[i].value;
         }
         getCommunity(options[0], options[1], options[2], options[3]).then(res => {
-            console.log(res.data)
             targetOption.loading = false;
-            targetOption.children = res.data;
+            // @ts-ignore
+            targetOption.children = res.message.community;
             setDistrictOption(districtOption)
         })
-        targetOption.loading = false;
     }
 
     // 添加社区
