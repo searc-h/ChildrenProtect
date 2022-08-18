@@ -133,7 +133,7 @@ export default function Data() {
 
     useEffect(() => {
 
-      console.log(center)
+      // console.log(center)
 
       let map = new BMapGL.Map('mymap');
       let centerPoint = new BMapGL.Point(center.ing, center.lat)
@@ -147,10 +147,10 @@ export default function Data() {
       let doingIcon = new BMapGL.Icon(doing, new BMapGL.Size(45, 54));
 
       mapList.forEach((marker)=>{
-        console.log(marker)
+        // console.log(marker)
         let {longitude  , latitude} = marker
         let Pointer :any
-        if(marker.status == 'finished')
+        if(marker.status === 'finished')
         {
           // 创建点标记
           Pointer = new BMapGL.Marker(new BMapGL.Point(+longitude,+latitude ) ,{
