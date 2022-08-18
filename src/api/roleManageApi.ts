@@ -58,8 +58,9 @@ export const modifyInfo = (id: string, person: RoleListItem, role: "station" | "
     data.append("city", "重庆市");
     data.append("district", person.District);
     data.append("street", person.Street);
+    
     if (role === "director")
-        data.append("community", `重庆市${person.District + person.Street}`)
+        data.append("community", person.Community)
     return myAxios.post('/' + role + "/modify", data)
 }
 

@@ -61,7 +61,7 @@ export default function Event() {
                 type={"link"}
                 onClick={() => showModal({
                     type: "content", video: "", image:[],
-                    title:"事件描述",content:record.Describes,visible:true
+                    title:"查看事件描述",content:record.Describes,visible:true
                 })}>查看内容</Button>,
         }, {
             title: "事件图片",

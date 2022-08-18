@@ -137,7 +137,7 @@ export default function Data() {
 
       let map = new BMapGL.Map('mymap');
       let centerPoint = new BMapGL.Point(center.ing, center.lat)
-      map.centerAndZoom(centerPoint, 16);
+      map.centerAndZoom(centerPoint, 6);
       map.enableScrollWheelZoom();
 
       let zoomCtrl = new BMapGL.ZoomControl();  // 添加缩放控件

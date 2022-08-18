@@ -22,7 +22,7 @@ interface Props {
 }
 interface Districts {
     Name: string,
-    Level: "province" | "city" | "district" | "street",
+    Level: "province" | "city" | "district" | "street" | "Community",
     Districts: Districts[] | [],
 }
 
@@ -48,14 +48,19 @@ export const Manage = (props: Props) => {
 
     // 提交
     function formFinished(data: FormVal) {
+        let organization = data.organization.slice(2) 
+        if(organization[2] == 'false'){
+            message.error("请选择正确的社区，或者添加社区在进行选择");
+            return
+        }
         const role: Role = {
             name: data.name,
             phone: data.phone,
             province: "重庆市",
             city: "重庆市",
-            district: data.organization[0],
-            street: data.organization[1],
-            community: data.organization[2],
+            district: organization[0],
+            street: organization[1],
+            community: organization[2],
         };
         console.log(role)
 
@@ -85,7 +90,7 @@ export const Manage = (props: Props) => {
 
     // 编辑选中行
     const edit = (record: RoleListItem) => {
-        // console.log(record)
+        console.log('edit choose' ,record)
         setId(record.Id)
         setEditModalVisible(true);
         form.setFieldsValue({
@@ -96,7 +101,7 @@ export const Manage = (props: Props) => {
     // 保存编辑
     const save = async () => {
         form.validateFields().then(val => {
-     
+            console.log('edit save',val)
             const id = getId();
             if (!id) return message.warn("Id获取失败");
             modifyInfo(id, val, judgeRole ? "station" : "director")
@@ -149,6 +154,7 @@ export const Manage = (props: Props) => {
             options[i] = selectedOption[i].value;
         }
         getCommunity(options[0], options[1], options[2], options[3]).then(res => {
+            
             interface Response {
                 code: number,
                 message: {community: Array<{Community: string}>}
@@ -159,8 +165,18 @@ export const Manage = (props: Props) => {
                     label: item.Community,
                 }
             })
+            console.log('list',list)
             // @ts-ignore
-            targetOption.children = list || [];
+            if(list.length<1){
+                targetOption.children = [
+                    {
+                        value: "false",
+                        label: "请添加社区",
+                    }
+                ];
+            }
+            else targetOption.children = list 
+
             setDistrictOption({...districtOption})
             targetOption.loading = false;
         })
@@ -200,7 +216,7 @@ export const Manage = (props: Props) => {
             editable: true,
         }, {
             title: "省市",
-            width: 300,
+            width: 250,
             align: 'center',
             dataIndex: "Province",
             key: "province",
@@ -208,7 +224,7 @@ export const Manage = (props: Props) => {
             render: () => <span>重庆市</span>
         }, {
             title: "城市",
-            width: 300,
+            width: 250,
             align: 'center',
             dataIndex: "City",
             key: "city",
@@ -223,12 +239,20 @@ export const Manage = (props: Props) => {
             editable: true,
         }, {
             title: "街道",
-            width: 300,
+            width: 250,
             align: 'center',
             dataIndex: "Street",
             key: "street",
             editable: true,
         }, {
+            title: "社区",
+            width: 250,
+            align: 'center',
+            dataIndex: "Community",
+            key: "Community",
+            
+            editable: true,
+        },{
             title: "操作",
             key: "op",
             width: 200,
@@ -262,7 +286,7 @@ export const Manage = (props: Props) => {
                     {!judgeRole && <Button
                         type={"primary"}
                         onClick={() => {setIsStreetModalVisible(true)}}
-                    >新增街道选项</Button>}
+                    >新增社区选项</Button>}
                 </div>
                 
             </section>
@@ -278,7 +302,7 @@ export const Manage = (props: Props) => {
 
             <Modal
                 centered
-                title={"新增" + judgeRole ? "社区儿童主任" : "未成年人保护站站长"}
+                title={"新增" + judgeRole ? "未成年人保护站站长" : "社区儿童主任"}
                 visible={isModalVisible}
                 onCancel={() => setIsModalVisible(false)}
                 onOk={() => setIsModalVisible(false)}
@@ -317,12 +341,12 @@ export const Manage = (props: Props) => {
 
             <Modal
                 centered
-                title={"修改信息_" + judgeRole ? "社区儿童主任" : "未成年人保护站站长"}
+                title={"修改" + (judgeRole ? "未成年人保护站站长信息" : "社区儿童主任信息")}
                 visible={editModalVisible}
                 onCancel={() => setEditModalVisible(false)}
                 onOk={save}
             >
-                <Form form={form}>
+                <Form  form={form}>
                     <Form.Item
                         label={"姓名"}
                         name={"Name"}
@@ -330,7 +354,7 @@ export const Manage = (props: Props) => {
                         <Input />
                     </Form.Item>
                     <Form.Item
-                        label={"手机号"}
+                        label={"手机"}
                         name={"Phone"}
                     >
                         <Input />
@@ -347,11 +371,25 @@ export const Manage = (props: Props) => {
                     >
                         <Input />
                     </Form.Item>
+
+                   {
+                    judgeRole? "":
+                        <Form.Item 
+                            label={"社区"}
+                            name={"Community"}
+                        >
+                            <Input />
+                        </Form.Item>
+                        }
                 </Form>
             </Modal>
 
-            <Modal title={"新增街道选项"} visible={isStreetModalVisible}
+            <Modal 
+                centered
+                title={"新增社区选项"} 
+                visible={isStreetModalVisible}
                 onCancel={() => setIsStreetModalVisible(false)}
+                onOk={() => setIsStreetModalVisible(false)}
             >
                 <Form onFinish={finishCommunityForm}>
                     <Form.Item label={"区域"} name={"organization"}>
