@@ -149,10 +149,20 @@ export const Manage = (props: Props) => {
             options[i] = selectedOption[i].value;
         }
         getCommunity(options[0], options[1], options[2], options[3]).then(res => {
-            targetOption.loading = false;
+            interface Response {
+                code: number,
+                message: {community: Array<{Community: string}>}
+            }
+            const list = (res as unknown as Response).message.community?.map(item => {
+                return {
+                    value: item.Community,
+                    label: item.Community,
+                }
+            })
             // @ts-ignore
-            targetOption.children = res.message.community;
-            setDistrictOption(districtOption)
+            targetOption.children = list || [];
+            setDistrictOption({...districtOption})
+            targetOption.loading = false;
         })
     }
 
