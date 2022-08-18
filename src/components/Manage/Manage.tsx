@@ -159,7 +159,8 @@ export const Manage = (props: Props) => {
     // 添加社区
     const finishCommunityForm = (values: {organization: string[], community: string}) => {
         addCommunity(values.organization, values.community).then(res => {
-            console.log(res.data)
+            // @ts-ignore
+            return message.success(res.message);
         }, err => {
             return message.error(err.message);
         })
