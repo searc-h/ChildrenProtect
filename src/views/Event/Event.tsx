@@ -187,8 +187,8 @@ export default function Event() {
                 centered
                 visible={modalContent.visible}
                 title={modalContent.title}
-                onOk={handle}
                 onCancel={handle}
+                footer={null}
             >
                {
                     resolveModal()

@@ -47,7 +47,7 @@ export default function Data() {
   // 卡片显示内容
   const cardList:cardProps[] = [
     {
-      title: '非强制报告事件总数',
+      title: '事件报告数量',
       count: data.EventTotal,
       img: ''
     },
