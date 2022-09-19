@@ -164,7 +164,6 @@ export const Manage = (props: Props) => {
                     label: item.Community,
                 }
             })
-            console.log('list',list)
             // @ts-ignore
             if(list.length<1){
                 targetOption.children = [
@@ -192,7 +191,71 @@ export const Manage = (props: Props) => {
         })
     }
 
-    const columns = [
+    const StationColumns = [
+        {
+            title: "序号",
+            dataIndex: "key",
+            width: 100,
+            align: 'center',
+            key: "number",
+            editable: false,
+        }, {
+            title: "姓名",
+            width: 200,
+            align: 'center',
+            dataIndex: "Name",
+            key: "name",
+            editable: true,
+        }, {
+            title: "手机号",
+            width: 500,
+            align: 'center',
+            dataIndex: "Phone",
+            key: "phone",
+            editable: true,
+        }, {
+            title: "省市",
+            width: 250,
+            align: 'center',
+            dataIndex: "Province",
+            key: "province",
+            editable: false,
+            render: () => <span>重庆市</span>
+        }, {
+            title: "城市",
+            width: 250,
+            align: 'center',
+            dataIndex: "City",
+            key: "city",
+            editable: false,
+            render: () => <span>重庆市</span>
+        }, {
+            title: "区县",
+            width: 300,
+            align: 'center',
+            dataIndex: "District",
+            key: "district",
+            editable: true,
+        }, {
+            title: "街道",
+            width: 250,
+            align: 'center',
+            dataIndex: "Street",
+            key: "street",
+            editable: true,
+        }, {
+            title: "操作",
+            key: "op",
+            width: 200,
+            align: 'center',
+            render: (_: any, record: RoleListItem) => <Space>
+                <Button onClick={() => edit(record)} style={{color: 'green'}}>编辑</Button>
+                <Button onClick={() => reqRemoveRole(record.Id)} style={{color: 'red'}}> 删除</Button>
+            </Space>
+        },
+    ];
+
+    const DirectorColumns = [
         {
             title: "序号",
             dataIndex: "key",
@@ -250,7 +313,6 @@ export const Manage = (props: Props) => {
             align: 'center',
             dataIndex: "Community",
             key: "Community",
-            
             editable: true,
         },{
             title: "操作",
@@ -293,7 +355,7 @@ export const Manage = (props: Props) => {
 
             <Form form={form} component={false}>
                 <Table
-                    columns={columns as ColumnsType<RoleListItem>}
+                    columns={judgeRole ? StationColumns as ColumnsType<RoleListItem> : DirectorColumns as ColumnsType<RoleListItem>}
                     dataSource={list}
                     pagination={{pageSize: 6}}
                     bordered
