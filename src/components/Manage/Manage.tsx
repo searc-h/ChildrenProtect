@@ -100,9 +100,13 @@ export const Manage = (props: Props) => {
     // 保存编辑
     const save = async () => {
         form.validateFields().then(val => {
-            console.log('edit save',val)
             const id = getId();
             if (!id) return message.warn("Id获取失败");
+            val.District = val.organization[2];
+            val.Street = val.organization[3];
+            if (val.organization[4]) {
+                val.Community = val.organization[4];
+            }
             modifyInfo(id, val, judgeRole ? "station" : "director")
             .then(res => {
                 message.success((res as any).message)
@@ -421,28 +425,11 @@ export const Manage = (props: Props) => {
                     >
                         <Input />
                     </Form.Item>
-                    <Form.Item
-                        label={"区县"}
-                        name={"District"}
-                    >
-                        <Input />
+                    <Form.Item label={"区域"} name={"organization"}>
+                        <Cascader options={[districtOption]} placeholder={"请选择"}
+                            // @ts-ignore
+                            loadData={loadCommunity} changeOnSelect />
                     </Form.Item>
-                    <Form.Item
-                        label={"街道"}
-                        name={"Street"}
-                    >
-                        <Input />
-                    </Form.Item>
-
-                   {
-                    judgeRole? "":
-                        <Form.Item 
-                            label={"社区"}
-                            name={"Community"}
-                        >
-                            <Input />
-                        </Form.Item>
-                        }
                 </Form>
             </Modal>
 
