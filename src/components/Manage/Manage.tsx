@@ -13,6 +13,7 @@ interface Option {
     children?: Option[];
     isLeaf?: boolean,
     loading?: boolean,
+    disabled?: boolean,
 }   // 级联选项
 interface Props {
     list: RoleListItem[]
@@ -49,7 +50,7 @@ export const Manage = (props: Props) => {
     // 提交
     function formFinished(data: FormVal) {
         let organization = data.organization.slice(2) 
-        if(organization[2] == 'false'){
+        if(organization[2] === 'false'){
             message.error("请选择正确的社区，或者添加社区在进行选择");
             return
         }
@@ -62,7 +63,6 @@ export const Manage = (props: Props) => {
             street: organization[1],
             community: organization[2],
         };
-        console.log(role)
 
         add(role, judgeRole ? "station" : "director").then(res => {
             // 成功之后更新列表
@@ -90,7 +90,6 @@ export const Manage = (props: Props) => {
 
     // 编辑选中行
     const edit = (record: RoleListItem) => {
-        console.log('edit choose' ,record)
         setId(record.Id)
         setEditModalVisible(true);
         form.setFieldsValue({
@@ -154,7 +153,7 @@ export const Manage = (props: Props) => {
             options[i] = selectedOption[i].value;
         }
         getCommunity(options[0], options[1], options[2], options[3]).then(res => {
-            
+
             interface Response {
                 code: number,
                 message: {community: Array<{Community: string}>}
@@ -172,6 +171,7 @@ export const Manage = (props: Props) => {
                     {
                         value: "false",
                         label: "请添加社区",
+                        disabled: true,
                     }
                 ];
             }
