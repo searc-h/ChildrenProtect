@@ -205,7 +205,7 @@ export default function Detail() {
                   <span className="title">事件经过：</span><span>{resInfo?.BasicResolve.Process}</span>
               </div>
               <div className="line">
-                <span className="title">设计到的未成年人：</span><span>{personList({ List: resInfo?.ChildList || [] })}</span>
+                <span className="title">涉及到的未成年人：</span><span>{personList({ List: resInfo?.ChildList || [] })}</span>
               </div>
               <div className="line">
                 <span className="title">涉及到的成年人：</span><span>{personList({ List: resInfo?.AdultList || [] })}</span>
