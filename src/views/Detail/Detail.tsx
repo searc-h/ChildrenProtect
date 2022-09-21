@@ -3,7 +3,6 @@ import { RightOutlined } from '@ant-design/icons'
 import {Button, message,Modal} from 'antd'
 import './Detail.less'
 import {useRef, useEffect, useState} from 'react'
-// import marker from '../../assets/icons/marker.png'
 import {getDetail} from "../../api/eventApi";
 
 interface PList {
@@ -39,7 +38,7 @@ interface PostInfo {
 }
 interface ResInfo {
     BasicResolve: {
-        
+        Result: 0 | 1 | 2,  // 已处置/未完成/处理中
         Process: string,    // 事件经过
         EventType: EventTypeIndex,
         Organization: string,
@@ -196,29 +195,29 @@ export default function Detail() {
               </div>
             </div>
           </div>
-          <div className="dealMes">
-            <div className="title">
-              处置信息
-            </div>
-            <div className="content">
-              <div className="line">
-                  <span className="title">事件经过：</span><span>{resInfo?.BasicResolve.Process}</span>
+          {resInfo?.BasicResolve.Result !== 1 && <div className="dealMes">
+              <div className="title">
+                  处置信息
               </div>
-              <div className="line">
-                <span className="title">涉及到的未成年人：</span><span>{personList({ List: resInfo?.ChildList || [] })}</span>
+              <div className="content">
+                  <div className="line">
+                      <span className="title">事件经过：</span><span>{resInfo?.BasicResolve.Process}</span>
+                  </div>
+                  <div className="line">
+                      <span className="title">涉及到的未成年人：</span><span>{personList({ List: resInfo?.ChildList || [] })}</span>
+                  </div>
+                  <div className="line">
+                      <span className="title">涉及到的成年人：</span><span>{personList({ List: resInfo?.AdultList || [] })}</span>
+                  </div>
+                  <div className="line">
+                      <span className="title">修订后的位置：</span>
+                      <span>{resInfo?.BasicResolve.XlocalSite}</span>
+                  </div>
+                  <div className="mapSite2 mapSite" ref={map2}>
+                      <MyMap mapList={mapListNew} mapRef={map2}/>
+                  </div>
               </div>
-              <div className="line">
-                <span className="title">涉及到的成年人：</span><span>{personList({ List: resInfo?.AdultList || [] })}</span>
-              </div>
-              <div className="line">
-                <span className="title">修订后的位置：</span>
-                <span>{resInfo?.BasicResolve.XlocalSite}</span>
-              </div>
-              <div className="mapSite2 mapSite" ref={map2}>
-                <MyMap mapList={mapListNew} mapRef={map2}/>
-              </div>
-            </div>
-          </div>
+          </div>}
         </div>
       </div>
         <Modal
