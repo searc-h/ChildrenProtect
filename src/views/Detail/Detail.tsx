@@ -38,7 +38,7 @@ interface PostInfo {
 }
 interface ResInfo {
     BasicResolve: {
-        Result: 0 | 1 | 2,  // 已处置/未完成/处理中
+        Status: 0 | 1,  // 处置中/未完成
         Process: string,    // 事件经过
         EventType: EventTypeIndex,
         Organization: string,
@@ -128,6 +128,7 @@ export default function Detail() {
   useEffect(() => {
     if (!id) return message.warn("事件ID获取失败");
     getDetail(id).then(res => {
+        console.log(res.data)
         const {PostInfo, ResolveInfo} = res.data;
         let maplist = [{lon:PostInfo.Lon  , lat:PostInfo.Lat}]
         setMapListOld(maplist)
@@ -195,7 +196,7 @@ export default function Detail() {
               </div>
             </div>
           </div>
-          {resInfo?.BasicResolve.Result !== 1 && <div className="dealMes">
+          {resInfo?.BasicResolve.Status === 1 && <div className="dealMes">
               <div className="title">
                   处置信息
               </div>

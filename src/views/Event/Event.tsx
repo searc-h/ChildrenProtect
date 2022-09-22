@@ -26,8 +26,8 @@ interface ModalContent {
 }
 
 const stateMap = {
-    0: "已处理",
-    1: "未处理",
+    0: "处理中",
+    1: "已处理",
 }
 
 export default function Event() {
@@ -92,7 +92,7 @@ export default function Event() {
             key: "state",
             align:'center',
             render: (state: "1" | "0") => <span
-                style={state === '0'
+                style={state === '1'
                     ? {color:"green"}
                     : {color:"red"}}
             >{stateMap[state]}</span>
@@ -161,7 +161,7 @@ export default function Event() {
                     if((modalContent.image as string[])[0].length>2)
                         return <p style={{"overflowY":"scroll" , width:"100%"}}>{
                             modalContent.image?.map((img)=>{
-                                return <img style={{width:"300px"}} key={img} src={"http://"+img} alt={"相关图片"}/>
+                                return <img style={{width:"300px"}} key={img} src={img} alt={"相关图片"}/>
                             })
                         }</p>
                     else{
