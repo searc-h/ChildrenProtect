@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import './Data.less'
-import finished from '../../assets/icons/finished.png'
-import doing from '../../assets/icons/doing.png'
+import map_yellow from "../../assets/icons/map_yellow.png";
+import map_green from "../../assets/icons/map_green.png";
 import {showCardData, showDataMap} from "../../api/dataApi";
 import {message} from "antd";
 
@@ -143,8 +143,8 @@ export default function Data() {
       let zoomCtrl = new BMapGL.ZoomControl();  // 添加缩放控件
       map.addControl(zoomCtrl);
 
-      let finishedIcon = new BMapGL.Icon(finished, new BMapGL.Size(45, 50));
-      let doingIcon = new BMapGL.Icon(doing, new BMapGL.Size(45, 54));
+      let finishedIcon = new BMapGL.Icon(map_green, new BMapGL.Size(45, 50));
+      let doingIcon = new BMapGL.Icon(map_yellow, new BMapGL.Size(45, 54));
 
       mapList.forEach((marker)=>{
         // console.log(marker)
@@ -184,6 +184,16 @@ export default function Data() {
         }
       </div>
       <div className="mapBox">
+        <section className={"map_icons"}>
+          <div>
+            <img src={map_green} alt={"已处置"} />
+            已处置事件
+          </div>
+          <div>
+            <img src={map_yellow} alt={"正处置"} />
+            正在处置事件
+          </div>
+        </section>
         <MyMap mapList={mapList} />
       </div>
     </div>
