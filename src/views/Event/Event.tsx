@@ -28,6 +28,7 @@ interface ModalContent {
 const stateMap = {
     0: "处理中",
     1: "已处理",
+    2: "处理中",
 }
 
 export default function Event() {
