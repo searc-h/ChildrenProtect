@@ -67,6 +67,7 @@ export const Manage = (props: Props) => {
         add(role, judgeRole ? "station" : "director").then(res => {
             // 成功之后更新列表
             updateList()
+            setIsModalVisible(false);
             return message.success((res as any).message);
         }, err => {
             return message.error(err.message);
@@ -188,6 +189,7 @@ export const Manage = (props: Props) => {
     // 添加社区
     const finishCommunityForm = (values: {organization: string[], community: string}) => {
         addCommunity(values.organization, values.community).then(res => {
+            setIsStreetModalVisible(false);
             // @ts-ignore
             return message.success(res.message);
         }, err => {
@@ -368,10 +370,10 @@ export const Manage = (props: Props) => {
 
             <Modal
                 centered
-                title={"新增" + judgeRole ? "未成年人保护站站长" : "社区儿童主任"}
+                title={`新增${judgeRole ? "未成年人保护站站长" : "社区儿童主任"}`}
                 visible={isModalVisible}
                 onCancel={() => setIsModalVisible(false)}
-                onOk={() => setIsModalVisible(false)}
+                footer={null}
             >
                 <Form
                     onFinish={formFinished}
@@ -400,7 +402,7 @@ export const Manage = (props: Props) => {
                             loadData={loadCommunity} changeOnSelect />
                     </Form.Item>
                     <Form.Item>
-                        <Button htmlType={"submit"} type={"primary"}>Submit</Button>
+                        <Button htmlType={"submit"} type={"primary"}>提交</Button>
                     </Form.Item>
                 </Form>
             </Modal>
@@ -411,6 +413,8 @@ export const Manage = (props: Props) => {
                 visible={editModalVisible}
                 onCancel={() => setEditModalVisible(false)}
                 onOk={save}
+                okText={"提交"}
+                cancelText={"取消"}
             >
                 <Form  form={form}>
                     <Form.Item
@@ -438,7 +442,7 @@ export const Manage = (props: Props) => {
                 title={"新增社区选项"} 
                 visible={isStreetModalVisible}
                 onCancel={() => setIsStreetModalVisible(false)}
-                onOk={() => setIsStreetModalVisible(false)}
+                footer={null}
             >
                 <Form onFinish={finishCommunityForm}>
                     <Form.Item label={"区域"} name={"organization"}>
@@ -448,7 +452,7 @@ export const Manage = (props: Props) => {
                         <Input />
                     </Form.Item>
                     <Form.Item>
-                        <Button type={"primary"} htmlType={"submit"}>Submit</Button>
+                        <Button type={"primary"} htmlType={"submit"}>提交</Button>
                     </Form.Item>
                 </Form>
             </Modal>
