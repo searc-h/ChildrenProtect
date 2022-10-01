@@ -14,7 +14,8 @@ interface DataType {
     Describes: string,
     Image: string,
     Video: string,
-    Status: string
+    Status: string,
+    Time: string,
 }
 interface ModalContent {
     visible: boolean,
@@ -26,8 +27,8 @@ interface ModalContent {
 }
 
 const stateMap = {
-    0: "处理中",
-    1: "已处理",
+    0: "已处理",
+    1: "处理中",
     2: "处理中",
 }
 
@@ -92,8 +93,8 @@ export default function Event() {
             dataIndex: "Status",
             key: "state",
             align:'center',
-            render: (state: "1" | "0") => <span
-                style={state === '1'
+            render: (state: "1" | "0" | "2") => <span
+                style={state === '0'
                     ? {color:"green"}
                     : {color:"red"}}
             >{stateMap[state]}</span>
@@ -107,7 +108,12 @@ export default function Event() {
                     id: record.Id,
                 }}
             >查看详情</Link>
-        },
+        }, {
+            title: "上报时间",
+            key: "time",
+            align:'center',
+            dataIndex: "Created",
+        }
     ];
 
     const [data, setData] = useState<DataType[]>([]);

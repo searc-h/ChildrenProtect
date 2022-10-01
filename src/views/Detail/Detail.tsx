@@ -128,7 +128,6 @@ export default function Detail() {
   useEffect(() => {
     if (!id) return message.warn("事件ID获取失败");
     getDetail(id).then(res => {
-        console.log(res.data)
         const {PostInfo, ResolveInfo} = res.data;
         let maplist = [{lon:PostInfo.Lon  , lat:PostInfo.Lat}]
         setMapListOld(maplist)
