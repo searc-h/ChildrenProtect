@@ -58,7 +58,34 @@ export const modifyInfo = (id: string, person: RoleListItem, role: "station" | "
     data.append("city", "重庆市");
     data.append("district", person.District);
     data.append("street", person.Street);
+    
     if (role === "director")
-        data.append("community", `重庆市${person.District + person.Street}`)
+        data.append("community", person.Community)
     return myAxios.post('/' + role + "/modify", data)
+}
+
+// 获取地区
+export const getDistinct = () => {
+    return myAxios.get("/area/getBasic");
+}
+
+// 获取社区
+export const getCommunity = (province: string, city: string, district: string, street: string) => {
+    const data = new FormData();
+    data.append("province", province);
+    data.append("city", city);
+    data.append("district", district);
+    data.append("street", street);
+    return myAxios("/area/getCommunity", {data});
+}
+
+// 添加社区
+export const addCommunity = (organization: string[], community: string) => {
+    const data = new FormData();
+    data.append("province", organization[0]);
+    data.append("city", organization[1]);
+    data.append("district", organization[2]);
+    data.append("street", organization[3]);
+    data.append("community", community);
+    return myAxios("/area/addCommunity", {data});
 }

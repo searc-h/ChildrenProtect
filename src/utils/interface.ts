@@ -13,6 +13,7 @@ export interface RoleListItem {
     City: "重庆市",
     District: string,
     Street: string,
+    Community:string
 }
 
 // 新增信息

@@ -7,25 +7,29 @@ import {getList} from "../../api/eventApi";
 
 interface DataType {
     key: React.Key,
-    Key?:String,
-    Number: number,
-    Id?: string, // 事件id
-    Type: string,
+    Key: number,
+    Id: string, // 事件id
+    EventTypeType: string,
     Phone: string,
-    Detail: string,
-    ImgUrl: string,
-    VidUrl: string,
-    Status: string
+    Describes: string,
+    Image: string,
+    Video: string,
+    Status: string,
+    Time: string,
 }
 interface ModalContent {
     visible: boolean,
     title: string,
     content: string,
+    image:string[],
+    video: string,  // 因为一定存在即使空字符串
+    type: "content" | "image" | "video",    // modal所显示内容类型
 }
 
 const stateMap = {
     0: "已处理",
-    1: "未处理",
+    1: "处理中",
+    2: "处理中",
 }
 
 export default function Event() {
@@ -37,12 +41,6 @@ export default function Event() {
             key: "key",
             align:'center'
         }, 
-        // {
-        //     title: "事件Id",
-        //     dataIndex: "Id",
-        //     key: "id",
-        //     align: "center",
-        // },
          {
             title: "事件类型",
             dataIndex: "Type",
@@ -58,34 +56,44 @@ export default function Event() {
             align:'center'
         }, {
             title: "事件描述",
-            dataIndex: "Detail",
+            dataIndex: "Describes",
             key: "detail",
             align:'center',
             render: (text, record) => <Button
                 type={"link"}
-                onClick={() => showModal("事件描述", record.Detail)}>查看内容</Button>,
+                onClick={() => showModal({
+                    type: "content", video: "", image:[],
+                    title:"查看事件描述",content:record.Describes,visible:true
+                })}>查看内容</Button>,
         }, {
             title: "事件图片",
-            dataIndex: "ImgUrl",
+            dataIndex: "Image",
             key: "picture",
             align:'center',
             render: (text, record) => <Button
                 type={"link"}
-                onClick={() => showModal("查看图片", record.VidUrl)}>查看图片</Button>,
+                onClick={() => showModal({
+                    title:"查看图片", content:"" , visible:true,
+                    type: "image", video: "",
+                    image:record.Image.split(",")||[]
+                })}>查看图片</Button>,
         }, {
             title: "事件视频",
-            dataIndex: "video",
+            dataIndex: "Video",
             key: "VidUrl",
             align:'center',
             render: (text, record) => <Button
                 type={"link"}
-                onClick={() => showModal("查看视频", record.VidUrl)}>查看视频</Button>,
+                onClick={() => showModal({
+                    type: "video", video: record.Video, title:"查看视频",
+                    content:"没有视频", visible:true,
+                    image:[]})}>查看视频</Button>,
         }, {
             title: "处理状态",
             dataIndex: "Status",
             key: "state",
             align:'center',
-            render: (state: "1" | "0") => <span
+            render: (state: "1" | "0" | "2") => <span
                 style={state === '0'
                     ? {color:"green"}
                     : {color:"red"}}
@@ -100,27 +108,42 @@ export default function Event() {
                     id: record.Id,
                 }}
             >查看详情</Link>
-        },
+        }, {
+            title: "上报时间",
+            key: "time",
+            align:'center',
+            dataIndex: "Created",
+        }
     ];
 
     const [data, setData] = useState<DataType[]>([]);
+
     const [modalContent, setModalContent] = useState<ModalContent>({
         visible: false,
         title: "",
         content: "",
+        video: "",
+        type: "content",    // 默认
+        image:[""]
     });
 
-    const showModal = (title: string, content?: string) => {
+    const showModal = (model: ModalContent & {type: "content" | "video" | "image"}) => {
         setModalContent({
-            content: content || "暂无内容",
-            title: title || "查看",
+            image:model.image,
+            content: model.content,
+            title: model.title || "查看",
             visible: true,
+            type: model.type,
+            video: model.video,
         })
     }
     const handle = () => setModalContent({
         visible: false,
         content: "暂无",
         title: "查看",
+        type: "content", 
+        image: [""], 
+        video: ""  // 回到默认
     })
 
     // 请求事件列表
@@ -133,9 +156,36 @@ export default function Event() {
             })
             setData(list)
         }, err => {
-            return message.error(err.response.message);
+            return message.error(err.message);
         })
     }, [])
+
+    function resolveModal(){
+        switch (modalContent.type) {
+            case "content": return <p>{modalContent.content}</p>
+            case "image":
+                if((modalContent.image as string[])?.length>0){
+                    if((modalContent.image as string[])[0].length>2)
+                        return <p style={{"overflowY":"scroll" , width:"100%"}}>{
+                            modalContent.image?.map((img)=>{
+                                return <img style={{width:"300px"}} key={img} src={img} alt={"相关图片"}/>
+                            })
+                        }</p>
+                    else{
+                        return <p>没有图片</p>
+                    }
+                }
+                break;
+            case "video":
+                if (modalContent.video.length > 0) {
+                    return <video controls width={"450"}>
+                        <source src={"http://" + modalContent.video} type={"video/mp4"}/>
+                    </video>
+                } else {
+                    return <p>没有视频</p>
+                }
+        }
+    }
 
     return (
         <>
@@ -144,10 +194,12 @@ export default function Event() {
                 centered
                 visible={modalContent.visible}
                 title={modalContent.title}
-                onOk={handle}
                 onCancel={handle}
+                footer={null}
             >
-                <p>{modalContent.content}</p>
+               {
+                    resolveModal()
+               }
             </Modal>
         </>
     )
