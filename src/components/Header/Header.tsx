@@ -4,6 +4,8 @@ import { Dropdown, Menu, Space } from 'antd';
 import './Header.less'
 import { useNavigate } from 'react-router-dom';
 import removeToken from '../../utils/removeToken';
+import logo from "../../assets/images/logo.jpg";
+
 export default function Header() {
 
   const navigate = useNavigate()
@@ -25,7 +27,7 @@ export default function Header() {
   return (
     <header className='header'>
         <div className='left'>
-          <div className='logo'>LOGO</div>
+          <img className='logo' src={logo} alt={"logo"} />
           <div className='title'>“宝护未来”儿童权利保障智慧平台</div>
         </div>
 

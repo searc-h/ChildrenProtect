@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { RightOutlined } from '@ant-design/icons'
 import {Button, message,Modal} from 'antd'
 import './Detail.less'
-import {useRef, useEffect, useState} from 'react'
+import React, {useRef, useEffect, useState} from 'react'
 import {getDetail} from "../../api/eventApi";
 
 interface PList {
@@ -71,6 +71,11 @@ interface mapProps {
   mapList: map[],
   mapRef:any
 }
+interface ModalContent {
+  visible: boolean,
+  title: "查看图片" | "查看视频",
+  type: "image" | "video",    // modal所显示内容类型
+}
 
 function MyMap(props: mapProps) {
   let { mapList ,mapRef} = props
@@ -98,6 +103,11 @@ function MyMap(props: mapProps) {
 export default function Detail() {
   const [postInfo, setPostInfo] = useState<PostInfo>();   // 上传信息
   const [resInfo, setResInfo] = useState<ResInfo>();   // 处置信息
+  const [modalContent, setModalContent] = useState<ModalContent>({
+    visible: false,
+    title: "查看图片",
+    type: "image",    // 默认
+  });
 
   let location = useLocation()
   let state = location.state as any
@@ -135,7 +145,7 @@ export default function Detail() {
           maplist = [{lon:ResolveInfo.BasicResolve.Xlon , lat:ResolveInfo.BasicResolve.Xlat}]
         }
         setMapListNew(maplist)
-        
+
         setPostInfo(PostInfo);
         setResInfo(ResolveInfo);
     }, err => {
@@ -143,16 +153,21 @@ export default function Detail() {
     })
   }, [id])
 
-  let [modelShow , setModelShow] = useState<boolean>(false)
-  const handle = () => setModelShow(false)
-
   function resolveModal(){
-    if(postInfo?.Image){
-      return postInfo?.Image?.split(",").map((item)=>{
-        return <img src={"http://"+item} key={item}/>
-      })
+    if (modalContent.type === "image") {
+      if(postInfo?.Image){
+        return postInfo.Image.split(",").map((item)=>{
+          return <img src={"http://" + item} key={item} alt={"图片"} />
+        })
+      }
+      else return <span>没有图片</span>
+    } else {
+      if (postInfo?.Video) {
+        return <video controls width={"450"}>
+          <source src={"http://" + postInfo.Video} type={"video/mp4"}/>
+        </video>
+      } else return <span>没有视频</span>
     }
-    else return <span>没有图片</span>
   }
 
   return (
@@ -181,10 +196,20 @@ export default function Detail() {
                 </div>
               </div>
               <div className="line3">
-                现场视频：<span><Button type='primary' ><span style={{ color: '#fff' }}>查看视频</span></Button></span>
+                现场视频：<span><Button type='primary' >
+                <span onClick={()=>{setModalContent({
+                  title: "查看视频",
+                  type: "video",
+                  visible: true
+                })}} style={{ color: '#fff' }}>查看视频</span></Button></span>
               </div>
               <div className="line4">
-                现场照片：<span><span><Button type='primary'><span onClick={()=>{setModelShow(true)}} style={{ color: '#fff' }}>查看照片</span></Button></span></span>
+                现场照片：<span><span><Button type='primary'>
+                <span onClick={()=>{setModalContent({
+                  title: "查看图片",
+                  type: "image",
+                  visible: true
+                })}} style={{ color: '#fff' }}>查看照片</span></Button></span></span>
               </div>
               <div className="line5">
                 事件发生位置: {postInfo?.LocalSite} <span />
@@ -222,10 +247,12 @@ export default function Detail() {
       </div>
         <Modal
             centered
-            visible={modelShow}
-            title={"查看图片"}
-            onOk={handle}
-            onCancel={handle}
+            visible={modalContent.visible}
+            title={modalContent.title}
+            onCancel={() => setModalContent({
+              title: "查看图片", type: "image", visible: false
+            })}
+            footer={null}
         >
           <p style={{"width":"100%" , "overflowY":"scroll"}}>
             {

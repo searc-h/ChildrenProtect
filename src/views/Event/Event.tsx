@@ -168,7 +168,7 @@ export default function Event() {
                     if((modalContent.image as string[])[0].length>2)
                         return <p style={{"overflowY":"scroll" , width:"100%"}}>{
                             modalContent.image?.map((img)=>{
-                                return <img style={{width:"300px"}} key={img} src={img} alt={"相关图片"}/>
+                                return <img style={{width:"300px"}} key={"http://" + img} src={img} alt={"相关图片"}/>
                             })
                         }</p>
                     else{
